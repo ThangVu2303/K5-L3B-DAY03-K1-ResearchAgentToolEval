@@ -1,4 +1,4 @@
-# Bàn giao TV2 — Khai báo tool và hn_search
+# Bàn giao khai báo tool và hn_search
 
 ## Đối chiếu yêu cầu
 
@@ -7,7 +7,7 @@
 | Mô tả chức năng, khi dùng/không dùng và args của tool | `starter_v0/artifacts/tools.yaml`, 10 tool hiện có | CP2, rubric C2 |
 | Ít nhất 1 tool mới, TOOL.md và đăng ký | `starter_v0/tools/hn_search/`, registry và YAML | CP3, rubric C4 |
 | Ít nhất 3 test/tool mới, suite không failed | 26 trường hợp trong `tests/test_tools_todo.py` | CP3, README Step 4b |
-| Routing, bảng tool và bằng chứng tool mới | Hướng dẫn dưới đây, A2 và B5a | Phân công TV2, mẫu báo cáo nhóm |
+| Routing, bảng tool và bằng chứng tool mới | Hướng dẫn dưới đây, A2 và B5a | Phân công nhóm, mẫu báo cáo nhóm |
 
 Nguồn: [CHECKPOINTS](../CHECKPOINTS.md), [RUBRIC](../RUBRIC.md),
 [tool contract](../starter_v0/tools/README.md).
@@ -28,7 +28,7 @@ Quy tắc tích hợp vào prompt:
 
 Lấy v0 với bản nguyên gốc trước khi ghép declaration. Sau đó TV1 kiểm chứng
 thay đổi bằng base eval và ghi giả thuyết, hash, metric vào version log.
-Prompt, các bộ eval và version log chưa được thay đổi trong phần TV2.
+Prompt, các bộ eval và version log chưa được thay đổi trong phần khai báo và bổ sung tool.
 
 ## TV3 — Tool, test và eval case
 

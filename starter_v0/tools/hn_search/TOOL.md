@@ -11,7 +11,7 @@ side_effect: false
 
 # Hacker News topic search
 
-Tool mới do TV2 bổ sung cho CP3/C4. Không cần API key hoặc dependency mới;
+Tool tìm kiếm Hacker News bổ sung cho CP3/C4. Không cần API key hoặc dependency mới;
 dùng `requests` đã có trong starter.
 
 ## Khi nào dùng
@@ -57,4 +57,4 @@ không ném exception ra vòng lặp agent. API có thể trả ít hơn số b�
 Các test của tool nằm trong phần YOUR NEW TOOL(S) ở `tests/test_tools_todo.py`,
 dùng `fake_http`, không gọi mạng thật. TV3 tiếp nhận để review và bổ sung case
 model routing trong `data/eval_group.json`; TV1 tiếp nhận quy tắc routing trong
-`docs/TV2-HANDOFF.md`. Bảng kết quả kiểm tra và lệnh chạy lại nằm trong handoff.
+`docs/TOOL-HANDOFF.md`. Bảng kết quả kiểm tra và lệnh chạy lại nằm trong handoff.

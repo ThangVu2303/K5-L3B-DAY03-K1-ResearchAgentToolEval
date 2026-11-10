@@ -1,4 +1,4 @@
-# TV2: tool routing descriptions and argument conventions.
+# Tool routing descriptions and argument conventions.
 # Existing tool names and Python signatures are preserved.
 # Keep declarations, tools/__init__.py and TOOL.md in sync; run contract tests.
 # TV1 must capture an unchanged v0 before integrating this declaration set.
@@ -153,7 +153,7 @@ tools:
         max_chars: {type: integer, default: 8000, description: "Giới hạn đoạn text trả về, mặc định 8000; implementation điều chỉnh giá trị vào khoảng 1000–20000 ký tự."}
       required: [arxiv_url]
 
-  # ---------------- Team tool (TV2) ----------------
+  # ---------------- Team tool ----------------
   - name: hn_search
     description: >-
       Tìm bài đăng trên Hacker News theo chủ đề, trả tiêu đề, nguồn, điểm, số bình

@@ -6,7 +6,7 @@
 - MSSV: 2A202603745
 - Email: Chưa điền.
 - GitHub: [NhMinh-2610](https://github.com/NhMinh-2610)
-- Vai trò: TV2 — Tool declaration và tool mới, theo phân công nhóm.
+- Vai trò: Khai báo tool và phát triển tool mới, theo phân công nhóm.
 
 ## 2. Phần việc phụ trách
 
@@ -27,7 +27,7 @@ chạy kiểm chứng; thành viên cần đọc và tự giải thích được
 - Viết TOOL.md và đăng ký tool đầy đủ; dùng dependency `requests` có sẵn.
 - Bổ sung test minh chứng để bàn giao TV3: request/mapping, input xấu không gọi
   mạng, HTTP/timeout, response và hit không hợp lệ. Các TODO của tool cũ giữ nguyên.
-- Cập nhật A2/dòng tool mới B5a và soạn `docs/TV2-HANDOFF.md` cùng change request.
+- Cập nhật A2/dòng tool mới B5a và soạn `docs/TOOL-HANDOFF.md` cùng change request.
 
 ## 4. Bằng chứng và kiểm chứng
 
@@ -38,8 +38,8 @@ chạy kiểm chứng; thành viên cần đọc và tự giải thích được
 - Test: [test_tools_todo.py](../../starter_v0/tests/test_tools_todo.py),
   phần YOUR NEW TOOL(S).
 - Báo cáo: [group_report.md](group_report.md), A2 và dòng tool mới B5a.
-- Bàn giao và lệnh kiểm tra: [TV2-HANDOFF.md](../../docs/TV2-HANDOFF.md).
-- Change request: [CHANGE_REQUEST_TV2.md](../../CHANGE_REQUEST_TV2.md).
+- Bàn giao và lệnh kiểm tra: [TOOL-HANDOFF.md](../../docs/TOOL-HANDOFF.md).
+- Change request: [CHANGE_REQUEST.md](../../CHANGE_REQUEST.md).
 - Commit kỹ thuật: xem [lịch sử nhánh NguyenNhatMinh](https://github.com/ThangVu2303/K5-L3B-DAY03-K1-ResearchAgentToolEval/commits/NguyenNhatMinh).
 
 Kết quả tự động Codex đã chạy trên môi trường Python của lab:

@@ -1,4 +1,4 @@
-# TV2: khai báo tool và tìm kiếm Hacker News
+# Khai báo tool và tìm kiếm Hacker News
 
 ## Thay đổi
 
@@ -8,8 +8,8 @@
   hoặc thời gian. Bổ sung code, TOOL.md, registry và khai báo YAML.
 - Kiểm tra input trước khi gọi mạng; lỗi HTTP/timeout trả error dict. URL bài
   sai định dạng chuyển sang link thảo luận HN, các kết quả khác vẫn được giữ.
-- Bổ sung test, bảng A2/B5a và [tài liệu bàn giao](docs/TV2-HANDOFF.md).
-  Nhật ký cục bộ `.local/tv2/` được gitignore.
+- Bổ sung test, bảng A2/B5a và [tài liệu bàn giao](docs/TOOL-HANDOFF.md).
+  Nhật ký cục bộ `.local/` được gitignore.
 
 ## Kiểm tra
 
@@ -36,4 +36,4 @@ sai định dạng. Regression test đã tái hiện lỗi URL trước khi sử
   implementation `send` không thay đổi trong PR này.
 
 Căn cứ: [CP2/CP3](CHECKPOINTS.md), [C2/C4](RUBRIC.md),
-[tool contract](starter_v0/tools/README.md) và phân công TV2 của nhóm.
+[tool contract](starter_v0/tools/README.md) và phân công công việc của nhóm.

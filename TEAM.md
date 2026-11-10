@@ -13,13 +13,13 @@
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
 |   1 | Chưa điền | Chưa điền | Chưa điền | Chưa điền | TV1 — Nhóm trưởng / Prompt, base eval v0–v3 |
-|   2 | Nguyền Nhật Minh | 2A202603745 | Chưa điền | [NhMinh-2610](https://github.com/NhMinh-2610) | TV2 — Tool declaration + tool mới |
+|   2 | Nguyền Nhật Minh | 2A202603745 | Chưa điền | [NhMinh-2610](https://github.com/NhMinh-2610) | Khai báo tool và phát triển tool mới |
 |   3 | Chưa điền | Chưa điền | Chưa điền | Chưa điền | TV3 — Unit test + eval nhóm |
 |   4 | Chưa điền | Chưa điền | Chưa điền | Chưa điền | TV4 — UI, demo, tổng hợp báo cáo |
 
 Phân vai theo bản `PHAN_CONG.md` nhóm cung cấp. Yêu cầu công việc và bằng chứng
 đối chiếu [CHECKPOINTS](CHECKPOINTS.md), [RUBRIC](RUBRIC.md) và
-[SUBMISSION](SUBMISSION.md); cách chia TV1–TV4 là phân công của nhóm.
+[SUBMISSION](SUBMISSION.md); các vai trò là phân công của nhóm.
 
 ## Cá nhân
 
@@ -33,11 +33,11 @@ Ví dụ: `report/team/20241234_NguyenVanAn.md`.
 
 Sao chép mục dưới đây cho từng thành viên.
 
-## TV2 — Nguyền Nhật Minh — 2A202603745
+## Nguyền Nhật Minh — 2A202603745
 
 ### Phần việc phụ trách
 
-- Cải thiện khai báo 10 tool có sẵn và thêm tool mới, theo phần TV2 của nhóm.
+- Cải thiện khai báo 10 tool có sẵn và thêm tool mới theo phân công nhóm.
 - Bàn giao routing cho TV1, contract/test minh chứng cho TV3, A2/B5a cho TV4.
 
 ### Đóng góp cụ thể
@@ -50,7 +50,7 @@ Sao chép mục dưới đây cho từng thành viên.
 
 ### Bằng chứng
 
-- [Bàn giao TV2](docs/TV2-HANDOFF.md), có link code, test, kết quả và giới hạn.
-- [Báo cáo cá nhân TV2](report/team/2A202603745_NguyenNhatMinh.md).
-- [Change request](CHANGE_REQUEST_TV2.md).
+- [Bàn giao tool](docs/TOOL-HANDOFF.md), có link code, test, kết quả và giới hạn.
+- [Báo cáo cá nhân](report/team/2A202603745_NguyenNhatMinh.md).
+- [Change request](CHANGE_REQUEST.md).
 - [Lịch sử commit kỹ thuật trên nhánh](https://github.com/ThangVu2303/K5-L3B-DAY03-K1-ResearchAgentToolEval/commits/NguyenNhatMinh).
