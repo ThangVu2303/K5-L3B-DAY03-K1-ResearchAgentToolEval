@@ -5,7 +5,7 @@
 - Họ tên: Nguyễn Hữu Thịnh
 - MSSV: 2A202603726
 - Email: 26ai.thinhnh2@vinuni.edu.vn
-- GitHub: huuthinh702812
+- GitHub: huuthinh812
 - Vai trò: TV4 — UI, Demo, Báo cáo (C6, C7)
 
 ## 2. Phần việc phụ trách
@@ -42,7 +42,7 @@
 
 ## 4. Bằng chứng
 
-- Commit: `3c4d555` — *feat(ui): add Streamlit UI for the research agent* (nhánh `feat/huuthinh`).
+- Commit: `3c4d555` — _feat(ui): add Streamlit UI for the research agent_ (nhánh `feat/huuthinh`).
 - Code: [`starter_v0/app.py`](../../starter_v0/app.py), [`starter_v0/scripts/show_failures.py`](../../starter_v0/scripts/show_failures.py), dòng `streamlit` trong [`starter_v0/requirements.txt`](../../starter_v0/requirements.txt).
 - Transcript chat live v3: [`v3_gemini_20261111T024323043613.transcript.json`](../../starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json) (`artifact_version = v3+pd5ffefbef293+t8a02817ed09c`).
 - Báo cáo nhóm: [group_report.md](group_report.md) — A1, A3, B4, dòng UI trong B5a.
@@ -63,7 +63,7 @@
 
 ## 6. Tự đánh giá
 
-> *(Nháp — tự sửa lại theo đánh giá của bản thân)*
+> _(Nháp — tự sửa lại theo đánh giá của bản thân)_
 
 - Làm tốt: UI chạy được với prompt v3, hiện rõ tool call và lỗi đúng yêu cầu rubric; phát hiện run v3 chưa hợp lệ và lỗi hash do ký tự xuống dòng.
 - Chưa tốt: chưa quản lý quota Gemini từ đầu nên mất nhiều request vào các lần chạy lỗi; lượt `timeline` trong transcript bị lỗi do chưa điền `RAPIDAPI_KEY` trước khi chat live.
