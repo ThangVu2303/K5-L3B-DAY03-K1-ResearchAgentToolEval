@@ -8,9 +8,14 @@
 
 ## 1. Thông tin nhóm
 
-- Tên nhóm:
+- Tên nhóm: K1
+- Lớp: L3B
 - Thành viên và phân công: xem [TEAM.md](../../TEAM.md)
-- Provider/model dùng cho v0–v3:
+  + TV1: Vũ Đình Thắng (Nhóm trưởng / Prompt Engineer — C1, C3)
+  + TV2: Nguyễn Nhật Minh (Tool Declaration & Custom Tool — C2, C4)
+  + TV3: Vũ Bá Tùng Lâm (Test & Eval — C4, C5)
+  + TV4: Nguyễn Hữu Thịnh (UI, Demo & Báo cáo — C6, C7)
+- Provider/model dùng cho v0–v3: Google Gemini (`gemini-3.5-flash`)
 
 ## 2. Mục tiêu và cách tiếp cận — PHẦN A: Giới thiệu agent
 
@@ -58,9 +63,14 @@ Ví dụ: "Research agent: tìm tin theo từ khóa / theo tài khoản, đọc 
 
 ## 3. Giải pháp
 
-> Tóm tắt các thay đổi chính trong `starter_v0/artifacts/system_prompt.md` và `starter_v0/artifacts/tools.yaml`, và tool mới nhóm viết (tên, làm gì, khi nào agent nên gọi).
-
--
+- **Tối ưu hóa `system_prompt.md` (TV1):**
+  + **v0 ➔ v1:** Loại bỏ toàn bộ chỉ dẫn độc hại của starter (đoán mò khi thiếu info, tự tiện gửi tin nhắn không hỏi, ép buộc hoàn thành trong 1 bước). Bổ sung quy tắc: gọi `clarify` khi thiếu handle hoặc URL bài viết; bắt buộc xin xác nhận của người dùng trước khi gọi `send`; thiết lập ranh giới từ chối các yêu cầu ngoài phạm vi research (code, thời tiết); và cho phép gọi đồng thời nhiều tool (`multi-tool call`).
+  + **v2 ➔ v3:** Tinh chỉnh việc trích xuất argument cho `lookup` (chỉ lấy keyword cốt lõi, không mở rộng từ đồng nghĩa gây sai lệch query); trích xuất handle Twitter (bỏ tiền tố `@`); bắt buộc dùng `response_type="yes_no"` khi xin xác nhận gửi Telegram; bổ sung quy tắc routing cho tool mới `hn_search`; và thiết lập cơ chế duy trì/ghi đè ngữ cảnh trong hội thoại nhiều lượt (`multi-turn`).
+- **Khai báo chuẩn hóa `tools.yaml` (TV2):**
+  + Viết lại mô tả cho 10 tool có sẵn, phân định rõ ranh giới "khi nào nên dùng" và "khi nào KHÔNG ĐƯỢC dùng".
+  + Chuẩn hóa quy ước tham số: handle không chứa ký tự `@`, định dạng `timeframe`, `search_type=Top|Latest`, tham số `confirmed=True` cho `send`.
+- **Phát triển tool mới `hn_search` (TV2 & TV3):**
+  + Tìm kiếm bài thảo luận trên Hacker News qua Algolia API (`query`, `max_results`, `sort_by=relevance|date`). Trả về error dict an toàn, không raise exception ra ngoài agent.
 
 ## 4. Kết quả — PHẦN B: Chi tiết và bằng chứng
 
@@ -163,6 +173,11 @@ Lỗi đặc thù của model nhỏ (đếm từ run JSON):
 - **Over-clarification:** Ở v1 model có xu hướng hỏi lại quá nhiều cả khi user đã cung cấp handle `@sama`. Nhóm đã tinh chỉnh prompt ở v2/v3 để model phân biệt rõ khi nào đủ thông tin thì gọi `timeline`, chỉ thiếu hẳn mới gọi `clarify`.
 
 ## 6. Tổng hợp đóng góp
+
+- **Vũ Đình Thắng (TV1 — C1, C3):** Thiết lập môi trường và sửa lỗi provider (`gemini_provider.py`); chạy baseline v0 hợp lệ và phân tích 9 failure cases (Bảng B2); thực hiện chuỗi cải tiến lặp v0 ➔ v1 ➔ v2 ➔ v3 trên `system_prompt.md`, đưa độ chính xác từ 55.0% lên 100.0%; ghi nhận lịch sử phiên bản `version_log.csv`; hoàn thiện B1, B2, Mục 1, 3, 5, 7 trong báo cáo nhóm.
+- **Nguyễn Nhật Minh (TV2 — C2, C4):** Viết lại khai báo cho 10 công cụ trong `artifacts/tools.yaml`; phát triển công cụ mới `hn_search` kèm `TOOL.md` và đăng ký registry; viết tài liệu bàn giao `TOOL-HANDOFF.md`, Mục A2 và B5a.
+- **Vũ Bá Tùng Lâm (TV3 — C4, C5):** Viết bộ unit tests cho tool mới trong `tests/test_tools_todo.py`; xây dựng bộ đánh giá của nhóm gồm 10 cases trong `data/eval_group.json`; chạy eval suite group và hoàn thiện bảng B3, B5a.
+- **Nguyễn Hữu Thịnh (TV4 — C6, C7):** Phát triển ứng dụng Streamlit `app.py`; triển khai tunnel demo public; thực hiện các phiên chat live đa lượt, thu thập transcript vào `transcripts/` và viết bảng B4; hoàn thiện Mục A1, A3 và tổng hợp báo cáo.
 
 Chi tiết đóng góp của từng thành viên nằm trong [TEAM.md](../../TEAM.md) và các báo cáo cá nhân `report/team/MSSV_HoTen.md`.
 
