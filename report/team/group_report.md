@@ -71,9 +71,9 @@ Lấy từ `starter_v0/artifacts/version_log.csv` và `starter_v0/runs/*.json`. 
 | Version | Changed Artifact | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---:|---:|---|
 | v0 | baseline | Đo hành vi chưa tối ưu của starter prompt | - | 0.55 | starter_v0/runs/v0_B_base_gemini_20261110T195405860459.json |
-| v1 |  |  |  |  |  |
-| v2 |  |  |  |  |  |
-| v3 |  |  |  |  |  |
+| v1 | system_prompt.md | Bỏ chỉ dẫn xấu (đoán mò, tự gửi) và thêm rule clarify + xác nhận gửi + từ chối out-of-scope | 0.55 | 0.80 | starter_v0/runs/v1_B_base_gemini_20261110T215625710195.json |
+| v2 | tools.yaml | Khai báo lại tools.yaml theo TV2: chi tiết when to use/not use và convention args | 0.80 | 0.85 | starter_v0/runs/v2_B_base_gemini_20261110T221714362720.json |
+| v3 | system_prompt.md | Tối ưu prompt đa lượt: chuẩn hóa query, trích xuất handle timeline, routing hn_search, clarify yes_no cho send | 0.85 | 1.00 | starter_v0/runs/v3_B_base_gemini_20261110T225014036508.json |
 
 ### B2. Failure Analysis
 
@@ -158,9 +158,9 @@ Lỗi đặc thù của model nhỏ (đếm từ run JSON):
 
 ## 5. Khó khăn và cách xử lý
 
-> Khó khăn chính và cách nhóm xử lý. Nếu gặp lỗi kỹ thuật (provider lỗi, hết quota API, tool không chạy), mô tả lỗi và dẫn bằng chứng: run JSON, log, ảnh chụp.
-
--
+- **Lỗi Provider và Hạn ngạch API (429 RESOURCE_EXHAUSTED):** Ban đầu gặp lỗi cạn quota do chính sách Free Tier của Google AI Studio giới hạn 20 requests/ngày cho mỗi project. Nhóm đã xử lý bằng cách: tối ưu `gemini_provider.py` (thêm delay an toàn 3s giữa các request, bổ sung cơ chế retry với exponential backoff khi gặp lỗi 429/503), chuyển đổi model sang `gemini-3.5-flash`, và phân bổ key hợp lý cho từng phiên bản để đảm bảo mọi run làm bằng chứng đều có `provider_error_cases == 0` và `measured_cases == 20`.
+- **Ranh giới an toàn (Confirmation Boundary):** Starter prompt ban đầu có chỉ dẫn nguy hiểm ("tự gửi đi để user không phải đợi"). Nhóm đã loại bỏ chỉ dẫn này, áp dụng quy tắc bắt buộc xin xác nhận qua `clarify(response_type="yes_no")` trước khi kích hoạt `send`.
+- **Over-clarification:** Ở v1 model có xu hướng hỏi lại quá nhiều cả khi user đã cung cấp handle `@sama`. Nhóm đã tinh chỉnh prompt ở v2/v3 để model phân biệt rõ khi nào đủ thông tin thì gọi `timeline`, chỉ thiếu hẳn mới gọi `clarify`.
 
 ## 6. Tổng hợp đóng góp
 
@@ -168,10 +168,24 @@ Chi tiết đóng góp của từng thành viên nằm trong [TEAM.md](../../TEA
 
 ## 7. Hạn chế và hướng cải thiện — B6. Reflection
 
-- Fix nào thuộc `system_prompt.md`?
-- Fix nào thuộc `tools.yaml`?
-- Failure nào cần review thủ công thay vì chấm tự động?
-- Nếu có thêm một vòng, nhóm sẽ thử giả thuyết nào?
+- **Fix thuộc `system_prompt.md`:** 
+  + Loại bỏ toàn bộ các chỉ dẫn xấu (đoán mò, tự gửi tin, hoàn thành trong 1 bước).
+  + Thêm quy tắc gọi `clarify` khi thiếu thông tin thiết yếu (handle, URL).
+  + Ràng buộc xin xác nhận với `response_type="yes_no"` trước khi gọi `send`.
+  + Thiết lập boundary từ chối các yêu cầu ngoài phạm vi (lập trình, thời tiết).
+  + Cho phép gọi nhiều tool song song trong cùng 1 lượt (`multi-tool calls`).
+  + Bổ sung quy tắc routing cho tool mới `hn_search` và cơ chế ghi đè tham số trong hội thoại nhiều lượt.
+- **Fix thuộc `tools.yaml`:** 
+  + Viết lại description chi tiết cho 10 tool có sẵn: làm gì, khi nào NÊN dùng, khi nào KHÔNG ĐƯỢC dùng.
+  + Chuẩn hóa quy ước arguments: handle không có `@`, định dạng `timeframe`, `search_type=Top|Latest`.
+  + Ghi rõ điều kiện kích hoạt `send` chỉ khi `confirmed=True`.
+  + Khai báo tool mới `hn_search` đúng định dạng OpenAPI schema.
+- **Failure nào cần review thủ công thay vì chấm tự động:** 
+  + Các câu hỏi clarify có cách diễn đạt tự nhiên bằng tiếng Việt khác với chuỗi mong đợi cố định trong test suite.
+  + Các query tìm kiếm ngữ nghĩa tương đương nhưng model trích xuất ngắn gọn hoặc dịch từ khóa tương đương.
+- **Nếu có thêm một vòng, nhóm sẽ thử giả thuyết nào:** 
+  + Bổ sung Dynamic Few-shot Examples vào system prompt để tối ưu hóa việc trích xuất argument cho các câu hỏi phức tạp.
+  + Tích hợp cơ chế Structured Outputs / JSON Schema validation để triệt tiêu hoàn toàn sai lệch kiểu dữ liệu arguments.
 
 ## 8. Tài liệu tham khảo
 
