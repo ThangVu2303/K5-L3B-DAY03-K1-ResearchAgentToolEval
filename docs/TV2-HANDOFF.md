@@ -1,111 +1,85 @@
-# Bàn giao TV2 — Tool declaration và hn_search
+# Bàn giao TV2 — Khai báo tool và hn_search
 
-## Phạm vi và căn cứ
+## Đối chiếu yêu cầu
 
-Theo phân công TV2 của nhóm: cải thiện declaration, thêm ít nhất 1 tool,
-bàn giao routing cho TV1, input/output cho TV3, bảng A2 và phần tool của B5a.
-Yêu cầu gốc: [CP2/CP3](../CHECKPOINTS.md), [rubric C2/C4](../RUBRIC.md),
+| Yêu cầu | Sản phẩm | Căn cứ |
+| --- | --- | --- |
+| Mô tả chức năng, khi dùng/không dùng và args của tool | `starter_v0/artifacts/tools.yaml`, 10 tool hiện có | CP2, rubric C2 |
+| Ít nhất 1 tool mới, TOOL.md và đăng ký | `starter_v0/tools/hn_search/`, registry và YAML | CP3, rubric C4 |
+| Ít nhất 3 test/tool mới, suite không failed | 26 trường hợp trong `tests/test_tools_todo.py` | CP3, README Step 4b |
+| Routing, bảng tool và bằng chứng tool mới | Hướng dẫn dưới đây, A2 và B5a | Phân công TV2, mẫu báo cáo nhóm |
+
+Nguồn: [CHECKPOINTS](../CHECKPOINTS.md), [RUBRIC](../RUBRIC.md),
 [tool contract](../starter_v0/tools/README.md).
 
-## Thay đổi đã thực hiện
+## TV1 — Declaration và routing
 
-- Viết lại description và quy ước args của 10 tool có sẵn trong
-  `starter_v0/artifacts/tools.yaml`: khi nào dùng, khi nào không dùng, handle
-  không có `@`, news/timeframe, Latest/Top, boolean xác nhận gửi Telegram.
-- Giữ nguyên tên, kiểu tham số, default, enum và required của 10 tool có sẵn.
-- Thêm `hn_search`, tài liệu TOOL.md, đăng ký registry và khai báo YAML.
-- Thay 3 stub YOUR NEW TOOL(S) bằng test thật; bổ sung case response thiếu/sai
-  và kết quả không hợp lệ. Các TODO của tool có sẵn giữ nguyên để TV3 tiếp nhận.
-- Điền A2 và dòng tool mới của B5a; có báo cáo TV2 và change request.
+Nhận `starter_v0/artifacts/tools.yaml`. Tên, kiểu tham số, default, enum và
+required của 10 tool hiện có được giữ nguyên. Description bổ sung handle không
+có `@`, news/timeframe, Latest/Top, xác nhận gửi, giới hạn 10 paper và đoạn text
+arXiv 1000–20000 ký tự.
 
-## Bàn giao TV1: routing và version
+Quy tắc tích hợp vào prompt:
 
-Câu routing đề xuất để TV1 review rồi tự tích hợp vào system prompt:
+> Khi yêu cầu tìm bài trên Hacker News/HN theo một chủ đề cụ thể, dùng hn_search.
+> Chọn sort_by=date cho mới nhất, relevance cho độ liên quan. Thiếu chủ đề thì
+> hỏi clarify. Với tweet dùng tool Twitter/X, với tìm web chung dùng lookup.
+> hn_search trả metadata; dùng fetch để đọc URL bài gốc nếu cần.
 
-> Khi người dùng yêu cầu tìm bài trên Hacker News/HN về một chủ đề cụ thể,
-> dùng hn_search với query là chủ đề đó. Chọn sort_by=date cho mới nhất và
-> relevance cho độ liên quan. Nếu thiếu chủ đề, hỏi clarify. Không dùng hn_search
-> cho tweet, tìm web chung hoặc bảng xếp hạng front page. Tool trả metadata;
-> nếu cần đọc bài gốc, dùng fetch cho URL đã tìm được.
+Lấy v0 với bản nguyên gốc trước khi ghép declaration. Sau đó TV1 kiểm chứng
+thay đổi bằng base eval và ghi giả thuyết, hash, metric vào version log.
+Prompt, các bộ eval và version log chưa được thay đổi trong phần TV2.
 
-Ví dụ để thử bằng model (chưa phải kết quả eval):
-
-- “Tìm 3 bài mới nhất trên Hacker News về AI agents.”
-  → `hn_search(query="AI agents", max_results=3, sort_by="date")`.
-- “Tìm bài liên quan đến SQLite trên HN.”
-  → `hn_search(query="SQLite", sort_by="relevance")`.
-- “Đọc kỹ bài ở URL này…” → `fetch`; “Mọi người nói gì trên Twitter…”
-  → `social_search`; không route hai trường hợp này sang `hn_search`.
-
-TV1 lấy v0 từ bản starter nguyên gốc trước khi tích hợp declaration này.
-Nhánh TV2 giữ nguyên `system_prompt.md`, eval gốc và version log; không có
-run model v0–v3 hay metric routing mới do TV2 tạo. TV1 kiểm chứng giả thuyết
-v2 bằng run thật và ghi đúng hash/artifact vào version log. Không gộp nhiều
-giả thuyết độc lập trong một version chỉ để đủ nhãn.
-
-## Bàn giao TV3: contract và test
+## TV3 — Tool, test và eval case
 
 ```python
 hn_search(query: str = "", max_results: int = 5, sort_by: str = "relevance") -> dict
 ```
 
-| Input | Hành vi |
+| Input hoặc tình huống | Hành vi |
 | --- | --- |
-| `query` có nội dung | Bỏ khoảng trắng đầu/cuối trước request |
-| `max_results` | Integer 1–20; từ chối 0, âm, >20, boolean, float, chuỗi số |
-| `sort_by` | Chỉ `relevance` hoặc `date` |
+| `query` | Chuỗi có nội dung; bỏ khoảng trắng đầu/cuối |
+| `max_results` | Integer 1–20; mặc định 5; từ chối boolean, float và chuỗi số |
+| `sort_by` | `relevance` hoặc `date`; mặc định `relevance` |
 | Input sai | Error dict, không gọi HTTP |
-| HTTP 429/500, timeout, JSON/response sai | Error dict, không raise ra agent |
-| Không có hit hợp lệ | `items=[]`, không bịa bài |
+| HTTP/timeout/JSON hoặc response sai | Error dict, không raise ra agent |
+| URL bài thiếu hoặc sai định dạng | Dùng link thảo luận HN; giữ các hit khác |
+| Không có hit hợp lệ | `items=[]` |
 
-Success: `tool`, `query`, `sort_by`, `max_results`, `items`. Item có `title`,
-`url`, `source`, `summary`, `hn_url`, `author`, `date`, `metrics.points` và
-`metrics.comments`. `summary` hiện là tiêu đề; không phải tóm tắt toàn văn.
-URL ngoài thiếu/không phải http(s) thì dùng link thảo luận HN. Xem
-[`TOOL.md`](../starter_v0/tools/hn_search/TOOL.md) để biết giới hạn.
+Success có `tool`, `query`, `sort_by`, `max_results`, `items`. Mỗi item gồm
+`title`, `url`, `source`, `summary`, `hn_url`, `author`, `date`, `metrics`.
+`summary` là tiêu đề, không phải tóm tắt toàn văn. Xem
+[TOOL.md](../starter_v0/tools/hn_search/TOOL.md).
 
-Test nằm trong phần YOUR NEW TOOL(S) của
-`starter_v0/tests/test_tools_todo.py`, dùng `fake_http` của starter. Có 21
-test instance cho tool mới: request/ánh xạ dữ liệu, validation không gọi mạng,
-HTTP/timeout, hit không hợp lệ và response sai schema. TV3 review/bổ sung,
-đặc biệt case model routing trong 10 case nhóm; ví dụ ở trên chưa được thêm
-vào eval_group.json và chưa được chạy qua model.
+Test nằm ở phần YOUR NEW TOOL(S) trong `starter_v0/tests/test_tools_todo.py`.
+TV3 tiếp nhận để review/bổ sung và thêm ít nhất 1 case route tới tool mới vào
+bộ 10 case nhóm. Ví dụ đầu vào và kết quả mong đợi:
 
-## Kết quả kiểm chứng thực tế
+| Yêu cầu | Tool/args mong đợi |
+| --- | --- |
+| Tìm 3 bài mới nhất trên Hacker News về AI agents | `hn_search(query="AI agents", max_results=3, sort_by="date")` |
 
-Lệnh chạy từ root repo:
+Ví dụ trên là đề xuất case, chưa phải kết quả chạy model.
 
-```powershell
-& "$env:USERPROFILE\.venvs\research-lab\Scripts\python.exe" -m pytest starter_v0/tests -q
+## TV4 — Báo cáo nhóm
+
+A2 đã có đủ 11 tool. B5a đã có nguồn code, kết quả tool và unit test; TV4 tổng
+hợp cùng phần UI/live chat. Xem [group_report.md](../report/team/group_report.md).
+
+## Kiểm tra
+
+Chạy lại từ `starter_v0/` bằng môi trường Python đã cài dependency:
+
+```bash
+python -m pytest -q
 ```
 
-| Kiểm tra | Kết quả |
-| --- | --- |
-| Toàn suite trước thay đổi | 62 passed, 17 skipped |
-| Toàn suite sau thay đổi | 88 passed, 14 skipped, 0 failed |
-| Contract YAML/registry/signature/TOOL.md | Pass trong suite trên |
-| Tool mới gọi API thật với `AI agents`, 1 kết quả, sort `date` | Thành công, trả về 1 item |
+- Toàn suite: **93 passed, 14 skipped, 0 failed**; gồm contract test và 26
+  trường hợp cho tool mới. 14 skipped là các TODO của tool có sẵn.
+- Regression test bắt được lỗi URL `https://[invalid` trước sửa; sau sửa cả
+  5 trường hợp URL không hợp lệ đều pass và giữ được hit hợp lệ tiếp theo.
+- Tool đã gọi API thật với `query="AI agents", max_results=1, sort_by="date"`
+  và trả về 1 item. Đây là kiểm tra tool; hiệu quả model routing do TV1/TV3 đo.
 
-14 skipped còn lại là TODO test của các tool starter; không nhận bonus 0 skipped.
-Lần smoke đầu trong sandbox bị lỗi DNS; cùng code chạy có quyền mạng đã thành
-công. Đây là tool smoke test, không phải model eval và không chứng minh routing
-accuracy đã tăng. Kết quả tìm kiếm có thể thay đổi theo thời gian.
-
-Log chi tiết cho AI/phiên làm việc được giữ local dưới `.local/tv2/` và gitignore.
-Bản tóm tắt kiểm chứng ở đây được chia sẻ để người nhận đối chiếu và chạy lại;
-không có API key/token trong tài liệu hoặc log được commit.
-
-## Bàn giao TV4 và phần cá nhân
-
-- A2 và dòng tool mới B5a đã cập nhật trong
-  [`group_report.md`](../report/team/group_report.md); TV4 tiếp tục tổng hợp.
-- TV2 có báo cáo `report/team/2A202603745_NguyenNhatMinh.md`; phần tự đánh giá
-  và tự kiểm tra bằng tay cần chính thành viên hoàn thiện trung thực.
-- Mỗi thành viên vẫn cần commit kỹ thuật và tự nộp link repo trên LMS theo
-  [SUBMISSION](../SUBMISSION.md). Chưa đánh dấu những việc đó đã nộp xong.
-
-## Nguồn API
-
-[Algolia HN Search API](https://hn.algolia.com/api): `/search` và
-`/search_by_date`, `query`, `tags=story`, `hitsPerPage`. Code tool là phần viết
-mới cho lab, không sao chép implementation từ thư viện ngoài.
+Nguồn API: [Algolia HN Search](https://hn.algolia.com/api), `/search`,
+`/search_by_date`, `query`, `tags=story`, `hitsPerPage`.

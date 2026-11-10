@@ -197,3 +197,19 @@ def test_hn_search_malformed_response_returns_error_dict(fake_http, payload) -> 
     fake_http(FakeResponse(payload))
     result = TOOL_FUNCTIONS["hn_search"](query="AI")
     assert result["error"] == "ValueError"
+
+
+@pytest.mark.parametrize("bad_url", ["https://[invalid", "javascript:alert(1)", "https://", None, 42])
+def test_hn_search_invalid_story_url_falls_back_without_losing_other_hits(fake_http, bad_url) -> None:
+    fake_http(FakeResponse({"hits": [
+        {"objectID": "201", "title": "Story with invalid URL", "url": bad_url},
+        {"objectID": "202", "title": "Valid story", "url": "https://example.com/valid"},
+    ]}))
+
+    result = TOOL_FUNCTIONS["hn_search"](query="AI", max_results=2)
+
+    assert "error" not in result
+    assert len(result["items"]) == 2
+    assert result["items"][0]["url"] == "https://news.ycombinator.com/item?id=201"
+    assert result["items"][0]["source"] == "news.ycombinator.com"
+    assert result["items"][1]["url"] == "https://example.com/valid"

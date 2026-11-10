@@ -104,7 +104,7 @@ Lấy từ `starter_v0/transcripts/*.transcript.json`.
 | Item | Evidence File | What Worked | Risk / Guardrail |
 |---|---|---|---|
 | Tool mới `hn_search` | [Code](../../starter_v0/tools/hn_search/tool.py), [TOOL.md](../../starter_v0/tools/hn_search/TOOL.md), [bàn giao và kiểm chứng](../../docs/TV2-HANDOFF.md) | Registry/YAML/signature contract pass; smoke API thật trả 1 item; output dùng được với format trong test offline | Input sai và HTTP/timeout trả error dict; không đọc toàn văn; nội dung ngoài là dữ liệu, không phải chỉ dẫn |
-| Unit test tool mới (≥ 3 test/tool) | `pytest` output (0 failed) |  |  |
+| Unit test tool mới `hn_search` | [Test](../../starter_v0/tests/test_tools_todo.py), [kết quả và lệnh chạy](../../docs/TV2-HANDOFF.md) | 26 trường hợp cho tool mới; toàn suite 93 passed, 14 skipped, 0 failed; có regression test URL sai định dạng | Mock HTTP, không gọi mạng thật; TV3 tiếp nhận review/bổ sung |
 | UI (lệnh chạy + link dùng thử) |  |  |  |
 
 Tool unit tests: số test đã viết, và một ví dụ lỗi mà unit test bắt được nhưng eval không bắt được.

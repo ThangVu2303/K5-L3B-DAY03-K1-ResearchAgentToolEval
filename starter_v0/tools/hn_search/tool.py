@@ -39,9 +39,15 @@ def hn_search(query: str = "", max_results: int = 5, sort_by: str = "relevance")
             if not story_id.isascii() or not story_id.isdigit() or not isinstance(title, str) or not title.strip():
                 continue
             hn_url = f"https://news.ycombinator.com/item?id={story_id}"
-            url = hit.get("url")
-            if not isinstance(url, str) or urlparse(url).scheme not in ("http", "https") or not urlparse(url).netloc:
-                url = hn_url
+            url = hn_url
+            candidate = hit.get("url")
+            if isinstance(candidate, str):
+                try:
+                    parsed = urlparse(candidate)
+                except ValueError:
+                    parsed = None
+                if parsed is not None and parsed.scheme in ("http", "https") and parsed.netloc:
+                    url = candidate
             items.append({
                 "title": title.strip(),
                 "url": url,

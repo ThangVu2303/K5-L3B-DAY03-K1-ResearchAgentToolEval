@@ -44,10 +44,9 @@ Sao chép mục dưới đây cho từng thành viên.
 
 - Nhánh `NguyenNhatMinh`: cải thiện description/args convention và boundary xác
   nhận gửi; bổ sung `hn_search`, TOOL.md, registry và YAML.
-- Bổ sung test tool mới với Codex hỗ trợ; suite thực tế 88 passed, 14 skipped,
-  0 failed. Live tool smoke trả về 1 item; chưa đo model routing.
-- Cập nhật A2/dòng tool mới B5a, tài liệu bàn giao và change request. Phần tự
-  đánh giá cá nhân và email còn để chính thành viên hoàn thiện.
+- Bổ sung 26 trường hợp test tool mới, gồm regression test cho URL sai định dạng;
+  suite thực tế 93 passed, 14 skipped, 0 failed. Gọi API thật trả về 1 item.
+- Cập nhật A2/B5a, tài liệu bàn giao cho TV1/TV3/TV4 và change request.
 
 ### Bằng chứng
 

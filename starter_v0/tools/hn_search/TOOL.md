@@ -35,7 +35,8 @@ Ví dụ: `hn_search(query="AI agents", max_results=3, sort_by="date")`.
 Kết quả thành công có `items`; không tìm thấy bài thì `items=[]`. Mỗi item có
 `title`, `url`, `source`, `summary` (tiêu đề, không phải tóm tắt toàn văn), `hn_url`,
 `author`, `date`, `metrics.points` và `metrics.comments`. Bài không có URL ngoài
-dùng link thảo luận HN. Bỏ qua hit không có ID số hoặc tiêu đề hợp lệ.
+dùng link thảo luận HN. URL sai định dạng cũng dùng link HN, không làm mất các
+hit còn lại. Bỏ qua hit không có ID số hoặc tiêu đề hợp lệ.
 
 Input sai, lỗi HTTP, timeout, JSON lỗi hoặc response thiếu danh sách `hits` trả
 `{"tool": "hn_search", "error": "<loại lỗi>", "message": "<chi tiết>"}`;
@@ -56,4 +57,4 @@ không ném exception ra vòng lặp agent. API có thể trả ít hơn số b�
 Các test của tool nằm trong phần YOUR NEW TOOL(S) ở `tests/test_tools_todo.py`,
 dùng `fake_http`, không gọi mạng thật. TV3 tiếp nhận để review và bổ sung case
 model routing trong `data/eval_group.json`; TV1 tiếp nhận quy tắc routing trong
-`docs/TV2-HANDOFF.md`. Kết quả test thực tế được ghi trong handoff sau khi chạy.
+`docs/TV2-HANDOFF.md`. Bảng kết quả kiểm tra và lệnh chạy lại nằm trong handoff.
