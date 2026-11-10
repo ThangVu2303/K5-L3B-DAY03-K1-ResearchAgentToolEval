@@ -1,0 +1,29 @@
+{
+  "transcript_id": "v3_gemini_ui_20261111T031504594962",
+  "version": "v3",
+  "artifact_version": "v3+pd5ffefbef293+t8a02817ed09c",
+  "prompt_hash": "d5ffefbef293e50338ab2ba3c5376545502b1a2e0d0cd803158b98df433e2a70",
+  "tools_hash": "8a02817ed09cb564d19001f9dd743aa732b55623ed7121c9d394810f891788d8",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash",
+  "system_prompt": "D:\\learncode\\du_an\\AIthucchien\\thuchanhb3\\K5-L3B-DAY03-K1-ResearchAgentToolEval\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\learncode\\du_an\\AIthucchien\\thuchanhb3\\K5-L3B-DAY03-K1-ResearchAgentToolEval\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "source": "streamlit_ui",
+  "created_at": "2026-11-11T03:15:04",
+  "updated_at": "2026-11-11T03:17:14",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-11-11T03:15:10",
+      "user": "Tin AI hôm nay có gì nổi bật?",
+      "status": "provider_error",
+      "assistant_text": null,
+      "rounds": [],
+      "tool_events": [],
+      "error": "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.6-flash, description: Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.\\nPlease retry in 11h41m38.550966122s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://aistudio.google.com/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'description': 'Generate content requests per day limit exceeded on Free Tier. See https://aistudio.google.com/docs/rate-limits.', 'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '42098s'}]}}",
+      "ended_at": "2026-11-11T03:17:14"
+    }
+  ]
+}

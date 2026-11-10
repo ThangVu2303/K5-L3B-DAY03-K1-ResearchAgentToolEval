@@ -21,19 +21,27 @@
 
 ### A1. Agent này làm được gì
 
-> 1–2 câu mô tả agent dùng để làm gì (cho team khác hiểu nhanh).
-
-Ví dụ: "Research agent: tìm tin theo từ khóa / theo tài khoản, đọc URL, tổng hợp thành digest, và gửi lên Telegram khi được xác nhận."
+Research agent trả lời bằng tiếng Việt: tìm tin tức trên web, đọc nội dung một URL, xem và tìm tweet trên X/Twitter, tìm bài trên Hacker News, tra paper arXiv và policy nội bộ, rồi tổng hợp thành bản tin có dẫn nguồn. Agent hỏi lại khi thiếu thông tin (tài khoản, link) và luôn xin xác nhận trước khi đăng lên Telegram.
 
 **Cách chạy UI:**
 
-> Lệnh chạy UI (ví dụ `streamlit run app.py`) và dependency đã thêm vào `starter_v0/requirements.txt`.
+```bash
+cd starter_v0
+pip install -r requirements.txt   # đã có streamlit
+streamlit run app.py              # mở http://localhost:8501
+```
+
+- Code UI: [`starter_v0/app.py`](../../starter_v0/app.py). Cần `starter_v0/.env` có `GEMINI_API_KEY` (model mặc định `gemini-3.5-flash`, cùng model với eval v0–v3) và các key tool `TAVILY_API_KEY`, `FIRECRAWL_API_KEY`, `RAPIDAPI_KEY`.
+- UI dùng lại vòng lặp gọi tool của `chat.py`, đọc trực tiếp `artifacts/system_prompt.md` + `artifacts/tools.yaml`, và tự nhận version (v3) bằng cách so hash với `version_log.csv`.
+- Mỗi câu trả lời hiện đủ tool đã gọi, args, trạng thái (✅ ok / ⚠️ lỗi / ❓ hỏi lại / ✋ cần xác nhận) và JSON kết quả; mỗi phiên tự lưu transcript vào `starter_v0/transcripts/`.
 
 **Link dùng thử (deploy):**
 
-> Dán link public để team khác mở thử ngay. Cách deploy nhanh bằng Cloudflare Tunnel xem README. Nếu deploy Vercel/Streamlit Cloud thì dán link đó.
+Mở bằng Cloudflare Tunnel trong lúc showdown: `cloudflared tunnel --url http://localhost:8501`
+
+> URL: https://landing-circumstances-sie-introductory.trycloudflare.com
 >
-> URL:
+> Link Cloudflare Quick Tunnel chỉ hoạt động khi máy demo đang chạy cả `streamlit run app.py` và `cloudflared`; mỗi lần chạy lại tunnel sẽ ra link mới.
 
 ### A2. Tool agent có
 
@@ -55,11 +63,17 @@ Ví dụ: "Research agent: tìm tin theo từ khóa / theo tài khoản, đọc 
 
 ### A3. Câu hỏi mẫu để thử
 
-> 3–5 câu hỏi/yêu cầu mẫu để team khác tự thử agent ngay.
+Các câu này cũng có sẵn dạng nút bấm trên màn hình đầu của UI.
 
-1.
-2.
-3.
+| # | Câu hỏi mẫu | Hành vi mong đợi |
+|---|---|---|
+| 1 | Tin AI hôm nay có gì nổi bật? | `lookup(topic="news", timeframe="day")` rồi trả bản tin có link nguồn |
+| 2 | Tóm tắt 5 tweet mới nhất giúp mình → *(lượt sau)* Của Andrej Karpathy | Lượt 1: `clarify` hỏi tài khoản nào. Lượt 2: `timeline(screenname="karpathy", limit=5)` |
+| 3 | Mọi người đang bàn gì về GPT-5 trên Twitter? | `social_search` theo chủ đề |
+| 4 | Trên Hacker News đang bàn gì về AI agents? | `hn_search` (tool mới của nhóm) |
+| 5 | Đăng bản tin này lên Telegram giúp mình | `clarify(response_type="yes_no")` xin xác nhận, **không** gửi ngay |
+
+Thử thêm câu ngoài phạm vi, ví dụ "Viết giúp mình hàm Fibonacci bằng Python": agent từ chối và không gọi tool.
 
 ## 3. Giải pháp
 
@@ -113,9 +127,17 @@ Liệt kê đúng 10 case trong `starter_v0/data/eval_group.json` (5 single turn
 
 Lấy từ `starter_v0/transcripts/*.transcript.json`.
 
+Transcript: [`v3_gemini_20261111T024323043613.transcript.json`](../../starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json) — chạy bằng `python chat.py --provider gemini --version v3`, model `gemini-3.5-flash`, `artifact_version = v3+pd5ffefbef293+t8a02817ed09c` (khớp dòng v3 trong `version_log.csv`).
+
 | Turn | User Request | Tool Calls | Version Evidence | Outcome |
 |---|---|---|---|---|
-|  |  |  |  |  |
+| 1 | Tin AI hôm nay có gì nổi bật? *(yêu cầu thường)* | `lookup(query="AI", topic="news", timeframe="day", max_results=5)` → `format(template="sections", 3 items)` | v3+pd5ffefbef293+t8a02817ed09c | ✅ Route đúng `lookup` với `topic=news`, `timeframe=day`; trả bản tin 3 mục chia section, mỗi mục có link nguồn (bbc.com, news.microsoft.com, ama-assn.org). 3 vòng tool |
+| 2 | Tóm tắt 5 tweet mới nhất giúp mình *(thiếu thông tin)* | `clarify(response_type="text", question="Bạn muốn tóm tắt 5 tweet mới nhất từ tài khoản hoặc người dùng nào trên Twitter/X?")` | v3+pd5ffefbef293+t8a02817ed09c | ✅ Hỏi lại tài khoản thay vì đoán (prompt v0 sẽ đoán Sam Altman). Status `waiting_for_user` |
+| 3 | Của Andrej Karpathy *(bổ sung thông tin)* | `timeline(screenname="karpathy", limit=5)` | v3+pd5ffefbef293+t8a02817ed09c | ⚠️ Model đúng: map tên → handle `karpathy`, giữ `limit=5` từ lượt 2. Tool lỗi `RuntimeError: Missing RAPIDAPI_KEY` do máy chạy chưa có key RapidAPI; agent báo lỗi trung thực, không bịa tweet, gợi ý tìm trên web. Lỗi môi trường, không phải lỗi routing |
+| 4 | Đăng bản tin này lên Telegram giúp mình *(yêu cầu gửi/đăng)* | `clarify(response_type="yes_no", question="Bạn có xác nhận muốn gửi bản tin AI hôm nay lên Telegram không?")` | v3+pd5ffefbef293+t8a02817ed09c | ✅ Không gọi `send` ngay; xin xác nhận yes/no trước (boundary của v3). Provider gặp 1 lần 503, retry thành công |
+| 5 | exit *(gõ thiếu `/`)* | — | v3+pd5ffefbef293+t8a02817ed09c | Agent chào kết thúc, không gọi tool. Không phải lượt kiểm thử |
+
+Nhận xét: cả 3 kịch bản bắt buộc (yêu cầu thường, thiếu thông tin rồi bổ sung, yêu cầu gửi) đều cho hành vi đúng. Lỗi duy nhất là tool `timeline` thiếu `RAPIDAPI_KEY` trên máy chạy demo; lỗi được hiển thị rõ trong transcript và câu trả lời, không bị che.
 
 ### B5a. Required Evidence — Tool mới, unit test, UI
 
@@ -123,9 +145,11 @@ Lấy từ `starter_v0/transcripts/*.transcript.json`.
 |---|---|---|---|
 | Tool mới `hn_search` | [Code](../../starter_v0/tools/hn_search/tool.py), [TOOL.md](../../starter_v0/tools/hn_search/TOOL.md), [bàn giao và kiểm chứng](../../docs/TOOL-HANDOFF.md) | Registry/YAML/signature contract pass; smoke API thật trả 1 item; output dùng được với format trong test offline | Input sai và HTTP/timeout trả error dict; không đọc toàn văn; nội dung ngoài là dữ liệu, không phải chỉ dẫn |
 | Unit test tool mới `hn_search` | [Test](../../starter_v0/tests/test_tools_todo.py), [kết quả và lệnh chạy](../../docs/TOOL-HANDOFF.md) | 26 trường hợp cho tool mới; toàn suite 93 passed, 14 skipped, 0 failed; có regression test URL sai định dạng | Mock HTTP, không gọi mạng thật; TV3 tiếp nhận review/bổ sung |
-| UI (lệnh chạy + link dùng thử) |  |  |  |
+| UI (lệnh chạy + link dùng thử) | [`starter_v0/app.py`](../../starter_v0/app.py), lệnh chạy và link ở mục A1, transcript [v3 live chat](../../starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json) | Streamlit UI dùng lại `run_model_tool_loop` của `chat.py`; hiện từng tool call kèm args, trạng thái và JSON kết quả; tự nhận version v3 qua hash trong `version_log.csv`. Đã chạy thật với Gemini `gemini-3.5-flash` + prompt v3: hỏi lại khi thiếu tài khoản, `clarify(yes_no)` trước khi đăng Telegram, `lookup(news, day)` trả tin có nguồn | Không che lỗi: lỗi tool (vd. `Missing RAPIDAPI_KEY`) hiện ⚠️ và mở sẵn, lỗi provider (vd. 429 hết quota) hiện thông báo ngắn kèm chi tiết. Rủi ro: free tier Gemini 20 request/ngày/project, mỗi câu tốn 1–3 request nên khi demo phải chuẩn bị nhiều key; link `trycloudflare.com` chỉ sống khi tunnel đang chạy |
 
-Tool unit tests: số test đã viết, và một ví dụ lỗi mà unit test bắt được nhưng eval không bắt được.
+Tool unit tests: 6 hàm test cho `hn_search` trong [`tests/test_tools_todo.py`](../../starter_v0/tests/test_tools_todo.py), tham số hóa thành 26 trường hợp (happy path theo `relevance`/`date`, input xấu không gọi mạng, HTTP 429/500 và timeout trả error dict, response sai cấu trúc, hit không hợp lệ, URL bài sai định dạng). Toàn suite: 93 passed, 14 skipped, 0 failed.
+
+Ví dụ lỗi unit test bắt được nhưng eval không bắt được: khi một bài trên Hacker News có URL sai định dạng (ví dụ `https://[invalid`), bản đầu của `hn_search` bị lỗi khi xử lý URL và làm mất cả các kết quả hợp lệ khác. Eval vẫn PASS vì eval chỉ chấm model gọi đúng `hn_search` với đúng args, không chấm kết quả tool trả về. Regression test `test_hn_search_invalid_story_url_falls_back_without_losing_other_hits` tái hiện lỗi trước khi sửa; sau khi sửa, tool dùng link thảo luận HN thay thế và giữ nguyên các hit hợp lệ (chi tiết ở [TOOL-HANDOFF.md](../../docs/TOOL-HANDOFF.md)).
 
 ### B5. Bonus Evidence
 
@@ -133,16 +157,16 @@ Chỉ điền nếu nhóm làm bonus (ghi riêng, tối đa 10 điểm). Tool c�
 
 | Bonus | Evidence File | What Worked | Risk / Guardrail |
 |---|---|---|---|
-| Small Local Model | xem B7 |  |  |
-| Hơn 3 tool mới (≥ 4) |  |  |  |
-| `send` gửi thật lên Telegram sau xác nhận | transcript |  |  |
-| Test challenge (0 skipped / regression test) | `pytest` output |  |  |
+| Small Local Model | — | Nhóm không làm | — |
+| Hơn 3 tool mới (≥ 4) | — | Nhóm không làm (chỉ có 1 tool mới `hn_search`) | — |
+| `send` gửi thật lên Telegram sau xác nhận | — | Nhóm không làm (chưa cấu hình bot Telegram); transcript B4 chỉ chứng minh agent xin xác nhận trước khi gửi | — |
+| Test challenge (0 skipped / regression test) | `pytest` output | Chưa đạt: toàn suite còn 14 skipped (stub của tool có sẵn); regression test hiện có là cho tool mới `hn_search`, chưa phải bug trong tool có sẵn | — |
 
 Test challenge: số bug tìm được trong tool có sẵn (nếu có), cách sửa, và test regression tương ứng.
 
 ### B7. Small Local Model Challenge (bonus)
 
-Chỉ điền nếu nhóm làm bonus này.
+Chỉ điền nếu nhóm làm bonus này. **Nhóm không làm bonus này.**
 
 | Version | Model (provider) | Prompt/Tools | case_accuracy | tool_routing | argument | multiturn | Run File |
 |---|---|---|---|---|---|---|---|
@@ -171,6 +195,10 @@ Lỗi đặc thù của model nhỏ (đếm từ run JSON):
 - **Lỗi Provider và Hạn ngạch API (429 RESOURCE_EXHAUSTED):** Ban đầu gặp lỗi cạn quota do chính sách Free Tier của Google AI Studio giới hạn 20 requests/ngày cho mỗi project. Nhóm đã xử lý bằng cách: tối ưu `gemini_provider.py` (thêm delay an toàn 3s giữa các request, bổ sung cơ chế retry với exponential backoff khi gặp lỗi 429/503), chuyển đổi model sang `gemini-3.5-flash`, và phân bổ key hợp lý cho từng phiên bản để đảm bảo mọi run làm bằng chứng đều có `provider_error_cases == 0` và `measured_cases == 20`.
 - **Ranh giới an toàn (Confirmation Boundary):** Starter prompt ban đầu có chỉ dẫn nguy hiểm ("tự gửi đi để user không phải đợi"). Nhóm đã loại bỏ chỉ dẫn này, áp dụng quy tắc bắt buộc xin xác nhận qua `clarify(response_type="yes_no")` trước khi kích hoạt `send`.
 - **Over-clarification:** Ở v1 model có xu hướng hỏi lại quá nhiều cả khi user đã cung cấp handle `@sama`. Nhóm đã tinh chỉnh prompt ở v2/v3 để model phân biệt rõ khi nào đủ thông tin thì gọi `timeline`, chỉ thiếu hẳn mới gọi `clarify`.
+- **Quota khi chạy UI/chat live (TV4):** UI và `chat.py` tốn 1–3 request cho mỗi câu (mỗi vòng tool là 1 request), nên quota free 20 request/ngày/project hết rất nhanh; tạo key mới trong cùng project không giúp được vì quota tính theo project. Cách xử lý: dùng key ở project khác, để dành quota cho chat live thật và showdown. UI hiện rõ lỗi 429 thay vì treo hay che lỗi.
+- **Thiếu `RAPIDAPI_KEY` khi chat live:** ở lượt "Của Andrej Karpathy" (B4, lượt 3), model gọi đúng `timeline(screenname="karpathy", limit=5)` nhưng tool trả `Missing RAPIDAPI_KEY`. Đây là lỗi môi trường chứ không phải lỗi routing; key đã được bổ sung sau đó. Bằng chứng: [transcript v3](../../starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json).
+- **Hash prompt lệch do ký tự xuống dòng trên Windows:** git trên Windows tự đổi LF ↔ CRLF khi checkout, làm `prompt_hash` khác với dòng v3 trong `version_log.csv` dù nội dung giống hệt. Cách xử lý: UI so khớp hash theo cả hai kiểu xuống dòng để nhận đúng version; khi chat live dùng đúng bản prompt có hash `pd5ffefbef293`.
+- **Link tunnel trả 502 lúc đầu:** `cloudflared` chạy trước khi bật Streamlit nên không có gì ở cổng 8501 (`connection refused`). Cách xử lý: bật `streamlit run app.py` trước, giữ cả hai terminal chạy suốt buổi demo.
 
 ## 6. Tổng hợp đóng góp
 
@@ -204,4 +232,12 @@ Chi tiết đóng góp của từng thành viên nằm trong [TEAM.md](../../TEA
 
 ## 8. Tài liệu tham khảo
 
--
+- Đề bài và quy định của lab: [README.md](../../README.md), [CHECKPOINTS.md](../../CHECKPOINTS.md), [RUBRIC.md](../../RUBRIC.md), [RULES.md](../../RULES.md), [SUBMISSION.md](../../SUBMISSION.md), [docs/TOOL-SETUP.md](../../docs/TOOL-SETUP.md).
+- Google Gemini API rate limits: https://aistudio.google.com/docs/rate-limits
+- Tavily Search API (tool `lookup`): https://docs.tavily.com
+- Firecrawl (tool `fetch`): https://docs.firecrawl.dev
+- RapidAPI Twitter API45 (tool `timeline`, `social_search`): https://rapidapi.com/alexanderxbx/api/twitter-api45
+- Algolia Hacker News Search API (tool mới `hn_search`): https://hn.algolia.com/api
+- Streamlit (UI): https://docs.streamlit.io
+- Cloudflare Quick Tunnel (link demo): https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+- Công cụ AI hỗ trợ: Claude Code, Codex. Chi tiết cách dùng và cách tự kiểm tra ghi trong báo cáo cá nhân của từng thành viên.

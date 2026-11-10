@@ -4,17 +4,17 @@
 
 - Tên nhóm: K1
 - Lớp: L3B
-- Repo nhóm: `K5-L3B-K1-ResearchAgentToolEval`
+- Repo nhóm: `K5-L3B-DAY03-K1-ResearchAgentToolEval`
 - URL repo, nhánh nộp, commit chốt: https://github.com/ThangVu2303/K5-L3B-DAY03-K1-ResearchAgentToolEval, nhánh vudinhthang, commit chốt: 4d07ea0
 
 ## Thành viên
 
-| STT | Họ tên | MSSV | Email | GitHub | Vai trò |
-| --: | ------ | ---- | ----- | ------ | ------- |
-|   1 | Vũ Đình Thắng | 2A202603753 | 26ai.thangvd2@vinuni.edu.vn | ThangVu2303 | TV1 — Nhóm trưởng / Prompt (C1, C3) |
-|   2 | Nguyễn Nhật Minh | 2A202603745 | 26ai.minhnn7@vinuni.edu.vn | NhMinh-2610 | TV2 — Tool declaration + Tool mới (C2, C4) |
-|   3 | Vũ Bá Tùng Lâm | 2A202603775 | 26ai.lamvbt@vinuni.edu.vn | lamvu-dev | TV3 — Test + Eval (C4, C5) |
-|   4 | Nguyễn Hữu Thịnh | 2A202603726 | 26ai.thinhnh2@vinuni.edu.vn | huuthinh812 | TV4 — UI, Demo, Báo cáo (C6, C7) |
+| STT | Họ tên           | MSSV        | Email                       | GitHub      | Vai trò                                    |
+| --: | ---------------- | ----------- | --------------------------- | ----------- | ------------------------------------------ |
+|   1 | Vũ Đình Thắng    | 2A202603753 | 26ai.thangvd2@vinuni.edu.vn | ThangVu2303 | TV1 — Nhóm trưởng / Prompt (C1, C3)        |
+|   2 | Nguyễn Nhật Minh | 2A202603745 | 26ai.minhnn7@vinuni.edu.vn  | NhMinh-2610 | TV2 — Tool declaration + Tool mới (C2, C4) |
+|   3 | Vũ Bá Tùng Lâm   | 2A202603775 | 26ai.lamvbt@vinuni.edu.vn   | lamvu-dev   | TV3 — Test + Eval (C4, C5)                 |
+|   4 | Nguyễn Hữu Thịnh | 2A202603726 | 26ai.thinhnh2@vinuni.edu.vn | huuthinh812 | TV4 — UI, Demo, Báo cáo (C6, C7)           |
 
 ## Cá nhân
 
@@ -112,13 +112,16 @@ Ví dụ: `report/team/2A202603753_VuDinhThang.md`.
 
 ### Đóng góp cụ thể
 
-- Hoàn thành giao diện chat trực quan với Streamlit, hỗ trợ trải nghiệm người dùng mượt mà.
-- Triển khai thành công ứng dụng demo public để các nhóm khác có thể trải nghiệm trực tiếp.
-- Thu thập và kiểm tra các file transcript hội thoại live multi-turn.
+- Viết UI Streamlit dùng lại vòng lặp tool của `chat.py`: hiện tool call, args, trạng thái và JSON kết quả; không che lỗi tool/provider; câu hỏi mẫu dạng nút bấm; tự nhận version qua hash trong `version_log.csv`; tự lưu transcript.
+- Viết `scripts/show_failures.py` để in độ hợp lệ của run và các case FAIL (hỗ trợ bảng B2).
+- Ghép UI với prompt v3 (TV1) và `hn_search` (TV2) trên nhánh `feat/huuthinh`, chạy thật với Gemini `gemini-3.5-flash`.
+- Phát hiện run v3 của nhóm có 1 `provider_error` (chưa hợp lệ) và lỗi lệch hash do ký tự xuống dòng trên Windows; đã báo nhóm.
+- Chat live v3 đủ 3 kịch bản (yêu cầu thường, thiếu thông tin rồi bổ sung, yêu cầu gửi Telegram) và viết bảng B4, A1, A3, dòng UI B5a.
+- Mở link demo public bằng Cloudflare Tunnel cho Team showdown: https://landing-circumstances-sie-introductory.trycloudflare.com (đã kiểm tra trả về trang UI; link chỉ sống khi máy demo chạy Streamlit + cloudflared).
 
 ### Bằng chứng
 
-- File giao diện `starter_v0/app.py`.
-- File cấu hình và dependency trong `starter_v0/requirements.txt`.
-- Các file transcript tại `starter_v0/transcripts/`.
-- Mục A1, A3, B4 trong `report/team/group_report.md`.
+- Commit `3c4d555` trên nhánh `feat/huuthinh`: `starter_v0/app.py`, `starter_v0/scripts/show_failures.py`, `starter_v0/requirements.txt`.
+- Transcript `starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json`.
+- Mục A1, A3, B4, B5a (dòng UI) trong `report/team/group_report.md`.
+- Báo cáo cá nhân `report/team/2A202603726_NguyenHuuThinh.md`.
