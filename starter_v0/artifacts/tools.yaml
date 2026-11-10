@@ -1,7 +1,7 @@
 # Tool routing descriptions and argument conventions.
 # Existing tool names and Python signatures are preserved.
 # Keep declarations, tools/__init__.py and TOOL.md in sync; run contract tests.
-# TV1 must capture an unchanged v0 before integrating this declaration set.
+# Original v0 declarations are available at commit c68da4c; use that revision for the baseline.
 tools:
   # ---------------- Core tools ----------------
   - name: clarify

@@ -26,8 +26,11 @@ Quy tắc tích hợp vào prompt:
 > hỏi clarify. Với tweet dùng tool Twitter/X, với tìm web chung dùng lookup.
 > hn_search trả metadata; dùng fetch để đọc URL bài gốc nếu cần.
 
-Lấy v0 với bản nguyên gốc trước khi ghép declaration. Sau đó TV1 kiểm chứng
-thay đổi bằng base eval và ghi giả thuyết, hash, metric vào version log.
+Bản starter nguyên gốc nằm ở commit
+`c68da4cdb50c118c9f00622bd72e6cd7afc57b18`. Nếu chưa có run v0, TV1 chạy baseline
+trên commit này; bản main có declaration mới dành cho các vòng cải tiến. Không
+dùng declaration đã sửa để ghi kết quả v0. TV1 kiểm chứng các thay đổi bằng base
+eval và ghi giả thuyết, hash, metric vào version log.
 Prompt, các bộ eval và version log chưa được thay đổi trong phần khai báo và bổ sung tool.
 
 ## TV3 — Tool, test và eval case
