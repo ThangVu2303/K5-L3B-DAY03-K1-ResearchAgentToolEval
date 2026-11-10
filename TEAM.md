@@ -13,7 +13,7 @@
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
 |   1 | Chưa điền | Chưa điền | Chưa điền | Chưa điền | TV1 — Nhóm trưởng / Prompt, base eval v0–v3 |
-|   2 | Nguyền Nhật Minh | 2A202603745 | Chưa điền | [NhMinh-2610](https://github.com/NhMinh-2610) | Khai báo tool và phát triển tool mới |
+|   2 | Nguyền Nhật Minh | 2A202603745 | nnhatminh2610@gmail.com | [NhMinh-2610](https://github.com/NhMinh-2610) | Khai báo tool và phát triển tool mới |
 |   3 | Chưa điền | Chưa điền | Chưa điền | Chưa điền | TV3 — Unit test + eval nhóm |
 |   4 | Chưa điền | Chưa điền | Chưa điền | Chưa điền | TV4 — UI, demo, tổng hợp báo cáo |
 
