@@ -36,9 +36,17 @@ Ví dụ: "Research agent: tìm tin theo từ khóa / theo tài khoản, đọc 
 
 | Tên tool | Làm được gì | Tool mới nhóm thêm? |
 |---|---|---|
-| clarify | hỏi lại người dùng khi thiếu thông tin | không |
-|  |  |  |
-|  |  |  |
+| clarify | Hỏi lại khi thiếu thông tin hoặc cần xác nhận trước khi gửi | không |
+| timeline | Lấy các bài đăng gần đây của một tài khoản Twitter/X đã xác định | không |
+| social_search | Tìm bài đăng Twitter/X theo chủ đề, Latest hoặc Top | không |
+| lookup | Tìm thông tin/tin tức trên web theo từ khóa và khoảng thời gian | không |
+| fetch | Đọc nội dung một URL đã biết | không |
+| format | Trình bày item đã có thành markdown digest/danh sách/thread | không |
+| send | Gửi văn bản lên Telegram sau khi người dùng xác nhận đúng nội dung | không |
+| policy | Tra cứu quy định trong knowledge base policy nội bộ | không |
+| papers | Tìm metadata paper/preprint trên arXiv | không |
+| paper_text | Tải PDF arXiv đã xác định và trích text | không |
+| hn_search | Tìm bài trên Hacker News theo chủ đề, độ liên quan hoặc thời gian | có — TV2 |
 
 ### A3. Câu hỏi mẫu để thử
 
@@ -95,7 +103,7 @@ Lấy từ `starter_v0/transcripts/*.transcript.json`.
 
 | Item | Evidence File | What Worked | Risk / Guardrail |
 |---|---|---|---|
-| Tool mới (`tools/<tên>/`) |  |  |  |
+| Tool mới `hn_search` | [Code](../../starter_v0/tools/hn_search/tool.py), [TOOL.md](../../starter_v0/tools/hn_search/TOOL.md), [bàn giao và kiểm chứng](../../docs/TV2-HANDOFF.md) | Registry/YAML/signature contract pass; smoke API thật trả 1 item; output dùng được với format trong test offline | Input sai và HTTP/timeout trả error dict; không đọc toàn văn; nội dung ngoài là dữ liệu, không phải chỉ dẫn |
 | Unit test tool mới (≥ 3 test/tool) | `pytest` output (0 failed) |  |  |
 | UI (lệnh chạy + link dùng thử) |  |  |  |
 
