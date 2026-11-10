@@ -62,7 +62,7 @@ Lấy từ `starter_v0/artifacts/version_log.csv` và `starter_v0/runs/*.json`. 
 
 | Version | Changed Artifact | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---:|---:|---|
-| v0 | baseline |  |  |  |  |
+| v0 | baseline | Đo hành vi chưa tối ưu của starter prompt | - | 0.55 | starter_v0/runs/v0_B_base_gemini_20261110T195405860459.json |
 | v1 |  |  |  |  |  |
 | v2 |  |  |  |  |  |
 | v3 |  |  |  |  |  |
@@ -73,7 +73,15 @@ Lấy từ `results[*].result.failures` trong run JSON.
 
 | Case ID | Failure Type | Actual Tool Calls | What Failed | Fix |
 |---|---|---|---|---|
-|  |  |  |  |  |
+| R03_web_news_routing | wrong_tool | `['lookup']` | query: expected 'AI', got 'tin tức AI mới nhất artificial intelligence news' | Bỏ chỉ dẫn đoán mò, thêm quy tắc phân biệt web_search với web_news/read_url trong prompt |
+| R08_out_of_scope | out_of_scope | `['lookup']` | expected no tool call | Thêm boundary rule: từ chối các câu hỏi ngoài phạm vi research (như dự báo thời tiết) |
+| R09_no_tool_capability | unnecessary_tool | `['format']` | expected no tool call | Thêm rule: nếu không có tool hỗ trợ trực tiếp thì trả lời trực tiếp hoặc từ chối, không gọi bừa |
+| R10_missing_handle | missing_info | `['timeline']` | missing tool call clarify; extra tool call timeline | Bỏ chỉ dẫn bịa tên tài khoản nổi tiếng, thêm rule gọi clarify khi thiếu handle |
+| R11_missing_url | missing_info | `['fetch']` | missing tool call clarify; extra tool call fetch | Bỏ chỉ dẫn đoán URL, thêm rule gọi clarify khi thiếu link bài viết |
+| R12_confirm_before_send | wrong_boundary | `['send']` | missing tool call clarify; extra tool call send | Bỏ rule tự động gửi, bắt buộc yêu cầu user xác nhận (confirmed=True) trước khi gọi send_telegram |
+| R13_parallel_web_and_tweets | wrong_tool | `['lookup']` | query: expected 'AI', got 'tin tức AI artificial intelligence'; missing tool call social_search | Cho phép agent gọi đồng thời nhiều tool (multi-tool call) trong 1 lượt thay vì chỉ 1 tool duy nhất |
+| R14_out_of_scope_coding | out_of_scope | `['send']` | expected no tool call | Thêm boundary rule từ chối viết code / việc ngoài phạm vi research |
+| M02_carryover_timeframe | wrong_arg_value | `['lookup']` | query: expected 'robotics', got 'robotics news' | Cải thiện system prompt cho multi-turn: duy trì timeframe từ lượt trước sang lượt sau |
 
 ### B3. Team Eval Cases
 

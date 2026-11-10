@@ -73,7 +73,7 @@ class GeminiProvider:
         self,
         *,
         api_key_env: str = "GEMINI_API_KEY",
-        default_model: str = "gemini-2.5-flash",
+        default_model: str = "gemini-3.5-flash",
     ) -> None:
         self.api_key_env = api_key_env
         self.default_model = default_model
@@ -115,11 +115,13 @@ class GeminiProvider:
                     contents=contents,
                     config=types.GenerateContentConfig(**config_kwargs),
                 )
+                time.sleep(3)
                 break
             except Exception as exc:
                 err_str = str(exc)
                 if any(x in err_str for x in ['429', 'RESOURCE_EXHAUSTED', '503', 'UNAVAILABLE']) and attempt < max_retries - 1:
-                    time.sleep(12 * (attempt + 1))
+                    print(f"   [retry {attempt+1}/6: {err_str[:40]}]", flush=True)
+                    time.sleep(8 * (attempt + 1))
                     continue
                 raise
 
