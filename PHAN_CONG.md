@@ -7,20 +7,22 @@
 
 | Vai trò | Họ tên | MSSV | Phụ trách rubric |
 |---|---|---|---|
-| TV1 — Nhóm trưởng / Prompt | | | C1, C3 |
-| TV2 — Tool declaration + Tool mới | | | C2, C4 |
-| TV3 — Test + Eval | | | C4, C5 |
-| TV4 — UI, Demo, Báo cáo | | | C6, C7 |
+| TV1 — Nhóm trưởng / Prompt | Vũ Đình Thắng | 2A202603753 | C1, C3 |
+| TV2 — Tool declaration + Tool mới | Nguyễn Nhật Minh | 2A202603745 | C2, C4 |
+| TV3 — Test + Eval | Vũ Bá Tùng Lâm | 2A202603775 | C4, C5 |
+| TV4 — UI, Demo, Báo cáo | Nguyễn Hữu Thịnh | 2A202603726 | C6, C7 |
 
 ## Trạng thái hiện tại
 
-- [x] `starter_v0/app.py` (Streamlit) đã có bản đầu
+- [x] `starter_v0/app.py` (Streamlit) đã có bản đầu (TV4)
 - [x] `streamlit` đã thêm vào `requirements.txt`
-- [x] `scripts/show_failures.py` để in các case FAIL (hỗ trợ làm bảng B2)
-- [ ] **Run v0 hiện có KHÔNG hợp lệ** (20/20 case lỗi provider) → phải sửa key/provider và chạy lại
-- [ ] `version_log.csv` chưa có dòng nào
-- [ ] `data/eval_group.json` còn rỗng
-- [ ] Chưa có tool mới
+- [x] `starter_v0/tools/hn_search/` đã phát triển và đăng ký thành công (TV2)
+- [x] `starter_v0/artifacts/tools.yaml` đã viết lại đầy đủ descriptions và conventions (TV2)
+- [x] `starter_v0/artifacts/system_prompt.md` đã cải tiến từ v0 -> v3 đạt 100% accuracy (TV1)
+- [x] Các run v0, v1, v2, v3 đã hoàn thành với 0 lỗi provider và ghi đầy đủ vào `version_log.csv` (TV1)
+- [x] Bảng B1, B2, B6 trong `group_report.md` đã hoàn thiện (TV1)
+- [ ] `data/eval_group.json` (10 eval cases nhóm) và unit tests (TV3)
+- [ ] Chat live transcript và hoàn thiện Phần A, B4 (TV4)
 
 ---
 
