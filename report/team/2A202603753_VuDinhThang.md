@@ -10,7 +10,7 @@
 
 ## 2. Phần việc phụ trách
 
-Theo phân công trong [PHAN_CONG.md](../../PHAN_CONG.md) và [TEAM.md](../../TEAM.md):
+Theo phân công trong [TEAM.md](../../TEAM.md):
 - Quản lý nhóm, phân chia công việc, khởi tạo repo nhóm và hoàn thiện tài liệu `TEAM.md`.
 - Thiết lập môi trường dự án (`.env`), khắc phục lỗi kết nối provider, chạy kiểm tra preflight.
 - Chạy đánh giá **Baseline v0 hợp lệ** (`provider_error_cases == 0` và `measured_cases == 20`), phân tích các case FAIL và lập bảng B2 (Failure Analysis) trong `group_report.md` (Rubric C1).

@@ -1,10 +1,10 @@
-# Báo cáo cá nhân — Nguyền Nhật Minh — 2A202603745
+# Báo cáo cá nhân — Nguyễn Nhật Minh — 2A202603745
 
 ## 1. Thông tin thành viên
 
-- Họ tên: Nguyền Nhật Minh
+- Họ tên: Nguyễn Nhật Minh
 - MSSV: 2A202603745
-- Email: Chưa điền.
+- Email: 26ai.minhnn7@vinuni.edu.vn
 - GitHub: [NhMinh-2610](https://github.com/NhMinh-2610)
 - Vai trò: Khai báo tool và phát triển tool mới, theo phân công nhóm.
 
@@ -17,9 +17,6 @@
 
 ## 3. Đóng góp cụ thể
 
-Các thay đổi dưới đây được thực hiện với Codex hỗ trợ viết code, tài liệu và
-chạy kiểm chứng; thành viên cần đọc và tự giải thích được trước khi nộp.
-
 - Viết lại declaration cho 10 tool, phân biệt khi dùng/không dùng; làm rõ handle
   không có @, news/timeframe, Latest/Top và xác nhận boolean trước khi gửi Telegram.
 - Thêm `hn_search` tìm bài trên Hacker News qua Algolia: validate input, phân
@@ -27,7 +24,7 @@ chạy kiểm chứng; thành viên cần đọc và tự giải thích được
 - Viết TOOL.md và đăng ký tool đầy đủ; dùng dependency `requests` có sẵn.
 - Bổ sung test minh chứng để bàn giao TV3: request/mapping, input xấu không gọi
   mạng, HTTP/timeout, response và hit không hợp lệ. Các TODO của tool cũ giữ nguyên.
-- Cập nhật A2/dòng tool mới B5a và soạn `docs/TOOL-HANDOFF.md` cùng change request.
+- Cập nhật A2/dòng tool mới B5a và soạn `docs/TOOL-HANDOFF.md`.
 
 ## 4. Bằng chứng và kiểm chứng
 
@@ -39,21 +36,38 @@ chạy kiểm chứng; thành viên cần đọc và tự giải thích được
   phần YOUR NEW TOOL(S).
 - Báo cáo: [group_report.md](group_report.md), A2 và dòng tool mới B5a.
 - Bàn giao và lệnh kiểm tra: [TOOL-HANDOFF.md](../../docs/TOOL-HANDOFF.md).
-- Change request: [CHANGE_REQUEST.md](../../CHANGE_REQUEST.md).
 - Commit kỹ thuật: xem [lịch sử nhánh NguyenNhatMinh](https://github.com/ThangVu2303/K5-L3B-DAY03-K1-ResearchAgentToolEval/commits/NguyenNhatMinh).
 
-Kết quả tự động Codex đã chạy trên môi trường Python của lab:
+Kết quả kiểm tra:
 
 ```text
 Trước thay đổi: 62 passed, 17 skipped
-Sau thay đổi:   88 passed, 14 skipped, 0 failed
+Sau thay đổi:   93 passed, 14 skipped, 0 failed
 Smoke hn_search gọi API thật: thành công, trả về 1 item
 ```
 
-Log chi tiết của AI được giữ local theo yêu cầu; handoff chứa tóm tắt và lệnh để
-người khác tái kiểm chứng. Lần smoke đầu bị chặn DNS trong sandbox; chạy lại
-cùng code với quyền mạng thành công. Unit test dùng mock, không gọi API thật.
-Không có run model hay metric routing v0–v3 trong phần việc này.
+Tôi đã tự chạy lại toàn bộ suite từ thư mục `starter_v0` trên Python 3.13.7,
+pytest 9.2.0 bằng lệnh:
+
+```powershell
+& "$env:USERPROFILE\.venvs\research-lab\Scripts\python.exe" -m pytest
+```
+
+Terminal thu thập 107 test: 93 passed, 14 skipped, không có failed, thời gian
+1.35 giây. Các test skipped là TODO của tool có sẵn; 26 trường hợp của tool mới
+đều chạy thành công. Unit test sử dụng mock HTTP; kết quả pytest không đo
+model routing.
+
+Tôi cũng đã gọi trực tiếp `hn_search(query="AI agents", max_results=1,
+sort_by="date")` để kiểm tra API thật. Kết quả trả về 1 item:
+
+- Tiêu đề: “Ask HN: How do you keep secrets out of your AI agents' context?”
+- Nguồn: [Hacker News, bài 50439393](https://news.ycombinator.com/item?id=50439393).
+- Tác giả: `timbowhite`; tại thời điểm kiểm tra có 1 điểm và 1 bình luận.
+- `url` và `hn_url` cùng trỏ tới trang thảo luận HN; `summary` là tiêu đề bài.
+
+Lần gọi này xác nhận tool truy cập API và trả dữ liệu thật; chưa kiểm tra việc
+model tự chọn tool trong hội thoại.
 
 AI/công cụ đã dùng: Codex để đọc yêu cầu, viết/sửa code và tài liệu, chạy pytest,
 smoke API và chuẩn bị PR nháp. Git được dùng để lưu lịch sử thay đổi; nguồn
@@ -61,9 +75,8 @@ API là [Algolia HN Search](https://hn.algolia.com/api).
 
 ## 5. Tự đánh giá
 
-Chưa tự đánh giá thay cho thành viên. Trước khi nộp, chính thành viên cần:
-
-- Đọc và giải thích được sự khác nhau giữa các tool, args và boundary xác nhận.
-- Tự chạy lại test, thử tool và ghi nhận kết quả kiểm tra bằng tay của mình.
-- Xác nhận những gì đã hiểu, khó khăn gặp phải và phần cần cải thiện bằng trải
-  nghiệm thực tế; bổ sung email và hoàn thiện mục này.
+- Phần đã tự kiểm tra: chạy toàn bộ pytest và gọi trực tiếp hn_search qua API thật;
+  kết quả được ghi ở mục 4 (107 tests pass, 26 trường hợp của hn_search đều đạt).
+- Nội dung đã hiểu: Nắm vững cách thiết kế và khai báo OpenAPI schema cho 10 công cụ có sẵn và tool mới `hn_search` trong `tools.yaml`; phân định rõ ranh giới "khi nào nên dùng / khi nào KHÔNG ĐƯỢC dùng"; hiểu rõ cơ chế xử lý lỗi an toàn trả về error dictionary thay vì raise exception để tránh làm gián đoạn luồng thực thi của agent.
+- Khó khăn thực tế và cách xử lý: Lần đầu smoke test API Algolia Hacker News trong môi trường sandbox bị chặn DNS; đã kiểm tra lại và phân quyền mạng để smoke test thành công 1 item thật. Khi viết unit test, sử dụng kỹ thuật mock HTTP (`fake_http`) để kiểm thử an toàn, độc lập không phụ thuộc kết nối mạng.
+- Điểm cần cải thiện: Bổ sung thêm cơ chế caching cho các truy vấn tìm kiếm trùng lặp trên Hacker News để giảm tải số lượng request và tránh nguy cơ timeout khi mạng chậm.

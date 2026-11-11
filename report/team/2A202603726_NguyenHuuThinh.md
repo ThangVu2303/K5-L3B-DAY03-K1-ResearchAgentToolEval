@@ -96,7 +96,7 @@
 
 ## 6. Tự đánh giá
 
-> _(Nháp — tự sửa lại theo đánh giá của bản thân)_
+
 
 - Làm tốt: hoàn thành cả mảng Test + Eval lẫn UI, Demo, Báo cáo với bằng chứng hợp lệ (run group 10/10, transcript v3, UI chạy thật); `pytest` đạt 0 skipped; phát hiện run v3 base chưa hợp lệ và lỗi hash do ký tự xuống dòng.
 - Chưa tốt: chưa quản lý quota Gemini từ đầu nên mất nhiều request vào các lần chạy lỗi; lượt `timeline` trong transcript bị lỗi do chưa điền `RAPIDAPI_KEY` trước khi chat live; chưa subscribe RapidAPI nên tool Twitter vẫn lỗi 403.
