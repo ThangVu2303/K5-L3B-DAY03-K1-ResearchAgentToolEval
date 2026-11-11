@@ -28,7 +28,7 @@ sai định dạng. Regression test đã tái hiện lỗi URL trước khi sử
 
 - TV1 lấy baseline v0 nguyên bản, sau đó tích hợp declaration và đo bản v2.
 - TV3 nhận contract/test, thêm case gọi `hn_search` vào bộ eval nhóm.
-- TV4 nhận bảng A2 và các dòng tool/test của B5a.
+- TV3 nhận thêm bảng A2 và các dòng tool/test của B5a để tổng hợp báo cáo.
 - Prompt, eval gốc và version log được giữ nguyên. Hiệu quả routing cần được
   xác nhận bằng run model của TV1/TV3.
 - `hn_search` trả metadata, không đọc toàn văn hoặc lấy bảng xếp hạng front page;

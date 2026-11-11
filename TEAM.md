@@ -9,12 +9,11 @@
 
 ## Thành viên
 
-| STT | Họ tên           | MSSV        | Email                       | GitHub      | Vai trò                                    |
-| --: | ---------------- | ----------- | --------------------------- | ----------- | ------------------------------------------ |
-|   1 | Vũ Đình Thắng    | 2A202603753 | 26ai.thangvd2@vinuni.edu.vn | ThangVu2303 | TV1 — Nhóm trưởng / Prompt (C1, C3)        |
-|   2 | Nguyễn Nhật Minh | 2A202603745 | 26ai.minhnn7@vinuni.edu.vn  | NhMinh-2610 | TV2 — Tool declaration + Tool mới (C2, C4) |
-|   3 | Vũ Bá Tùng Lâm   | 2A202603775 | 26ai.lamvbt@vinuni.edu.vn   | lamvu-dev   | Phân công ban đầu: TV3 — Test + Eval; phần việc TV3 đã chuyển cho Thịnh (xem mục dưới) |
-|   4 | Nguyễn Hữu Thịnh | 2A202603726 | 26ai.thinhnh2@vinuni.edu.vn | huuthinh812 | TV3 + TV4 — Eval nhóm, Test, UI, Demo, Báo cáo (C5, C6, C7) |
+| STT | Họ tên           | MSSV        | Email                       | GitHub      | Vai trò                                                  |
+| --: | ---------------- | ----------- | --------------------------- | ----------- | -------------------------------------------------------- |
+|   1 | Vũ Đình Thắng    | 2A202603753 | 26ai.thangvd2@vinuni.edu.vn | ThangVu2303 | TV1 — Nhóm trưởng / Prompt (C1, C3)                      |
+|   2 | Nguyễn Nhật Minh | 2A202603745 | 26ai.minhnn7@vinuni.edu.vn  | NhMinh-2610 | TV2 — Tool declaration + Tool mới (C2, C4)               |
+|   3 | Nguyễn Hữu Thịnh | 2A202603726 | 26ai.thinhnh2@vinuni.edu.vn | huuthinh812 | TV3 — Test + Eval, UI, Demo, Báo cáo (C5, C6, C7)        |
 
 ## Cá nhân
 
@@ -77,34 +76,17 @@ Ví dụ: `report/team/2A202603753_VuDinhThang.md`.
 
 ---
 
-## Vũ Bá Tùng Lâm - 2A202603775 (phân công ban đầu: TV3 — Test + Eval)
+## Nguyễn Hữu Thịnh - 2A202603726 (TV3 — Test + Eval, UI, Demo, Báo cáo)
 
 ### Phần việc phụ trách
 
-- Theo phân công ban đầu: viết 10 eval case nhóm, chạy `--suite group`, điền bảng B3 (C5).
-- Phần việc TV3 này đã được **Nguyễn Hữu Thịnh** thực hiện (commit `72c91e3`, `c0959ae` trên nhánh `feat/huuthinh`); unit test của tool mới `hn_search` do TV2 (Nguyễn Nhật Minh) viết.
-
-### Đóng góp cụ thể
-
-- *(Lâm tự điền phần việc thực tế đã làm, nếu có.)*
-
-### Bằng chứng
-
-- *(Lâm tự điền: commit, file. Tính đến 11/11 chưa có commit của tài khoản `lamvu-dev` trên repo.)*
-
----
-
-## Nguyễn Hữu Thịnh - 2A202603726 (TV3 + TV4 — Eval nhóm, Test, UI, Demo, Báo cáo)
-
-### Phần việc phụ trách
-
-**TV3 — Test + Eval (C5, bonus test):**
+**Test + Eval (C5, bonus test):**
 
 - Viết 10 eval case nhóm trong `starter_v0/data/eval_group.json` (5 single turn + 5 multi turn, có case route tới tool mới).
 - Chạy `--suite group` với v3, kiểm tra run hợp lệ và điền bảng B3.
 - Viết test cho các tool có sẵn trong `starter_v0/tests/test_tools_todo.py` (bonus test challenge: 0 skipped).
 
-**TV4 — UI, Demo, Báo cáo (C6, C7):**
+**UI, Demo, Báo cáo (C6, C7):**
 
 - Phát triển UI Streamlit `starter_v0/app.py`: hiện tool call, args, kết quả, không che lỗi.
 - Mở link demo public qua Cloudflare Tunnel cho Team showdown.
@@ -113,13 +95,13 @@ Ví dụ: `report/team/2A202603753_VuDinhThang.md`.
 
 ### Đóng góp cụ thể
 
-**TV3:**
+**Test + Eval:**
 
 - 10 eval case nhóm: 4 case route tới `hn_search` (theo tên HN, `sort_by="date"`, thiếu chủ đề rồi bổ sung, đổi nguồn web → HN); các case còn lại phủ bỏ `@` khỏi handle, `timeframe="month"`, dịch thuật ngoài phạm vi, giữ `search_type="Top"`/`max_results` qua nhiều lượt, và `send(confirmed=true)` sau khi user đã xác nhận.
 - Run `--suite group` v3 hợp lệ: 10/10 PASS, `provider_error_cases = 0`; B3 ghi rõ 3 case tool lỗi do môi trường (RapidAPI 403, thiếu token Telegram) mà eval không phát hiện.
 - Thay 14 stub `pytest.skip(TODO)` bằng test thật, offline, cho `clarify`, `format`, `send`, `lookup`, `fetch`, `timeline`, `social_search`, `policy`; `pytest`: 107 passed, 0 skipped, 0 failed.
 
-**TV4:**
+**UI, Demo, Báo cáo:**
 
 - Viết UI Streamlit dùng lại vòng lặp tool của `chat.py`: hiện tool call, args, trạng thái và JSON kết quả; không che lỗi tool/provider; câu hỏi mẫu dạng nút bấm; tự nhận version qua hash trong `version_log.csv`; tự lưu transcript.
 - Viết `scripts/show_failures.py` để in độ hợp lệ của run và các case FAIL (hỗ trợ bảng B2).
@@ -130,8 +112,8 @@ Ví dụ: `report/team/2A202603753_VuDinhThang.md`.
 
 ### Bằng chứng
 
-- TV3: commit `72c91e3` (`starter_v0/data/eval_group.json`, `starter_v0/tests/test_tools_todo.py`) và `c0959ae` (run `starter_v0/runs/v3_B_group_gemini_20261111T101011513780.json`, bảng B3).
-- TV4: commit `3c4d555` (`starter_v0/app.py`, `starter_v0/scripts/show_failures.py`, `starter_v0/requirements.txt`) và `ae13168` (transcript, báo cáo).
+- Test + Eval: commit `72c91e3` (`starter_v0/data/eval_group.json`, `starter_v0/tests/test_tools_todo.py`) và `c0959ae` (run `starter_v0/runs/v3_B_group_gemini_20261111T101011513780.json`, bảng B3).
+- UI, Demo, Báo cáo: commit `3c4d555` (`starter_v0/app.py`, `starter_v0/scripts/show_failures.py`, `starter_v0/requirements.txt`) và `ae13168` (transcript, báo cáo).
 - Transcript `starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json`.
 - Mục A1, A3, B3, B4, B5a (dòng UI + ghi chú unit test), B5 (test challenge) trong `report/team/group_report.md`.
 - Báo cáo cá nhân `report/team/2A202603726_NguyenHuuThinh.md`.

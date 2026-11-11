@@ -6,19 +6,17 @@
 - MSSV: 2A202603726
 - Email: 26ai.thinhnh2@vinuni.edu.vn
 - GitHub: huuthinh812
-- Vai trò: **TV3 + TV4** — Eval nhóm và Test (C5, bonus test), UI, Demo, Báo cáo (C6, C7)
-
-> Ban đầu được phân công TV4. Ngày 11/11 nhận thêm toàn bộ phần việc TV3 (eval nhóm, B3, test) vì phần này chưa có ai thực hiện.
+- Vai trò: **TV3** — Test + Eval (C5, bonus test), UI, Demo, Báo cáo (C6, C7)
 
 ## 2. Phần việc phụ trách
 
-**TV3 — Test + Eval**
+**Test + Eval**
 
 - Viết 10 eval case nhóm trong `starter_v0/data/eval_group.json` (5 single turn + 5 multi turn, có case route tới tool mới).
 - Chạy `--suite group` với prompt v3, kiểm tra run hợp lệ và điền bảng B3.
 - Viết test thật cho các tool có sẵn trong `starter_v0/tests/test_tools_todo.py` (bonus test challenge: 0 skipped).
 
-**TV4 — UI, Demo, Báo cáo**
+**UI, Demo, Báo cáo**
 
 - Xây dựng UI Streamlit cho agent (`starter_v0/app.py`) và thêm dependency vào `requirements.txt`.
 - Mở link dùng thử bằng Cloudflare Tunnel cho buổi Team showdown.
@@ -27,7 +25,7 @@
 
 ## 3. Đóng góp cụ thể
 
-### Phần TV3
+### Test + Eval
 
 **Eval nhóm (`starter_v0/data/eval_group.json`)**
 
@@ -42,7 +40,7 @@
 - Test chạy offline (mock HTTP bằng `fake_http`, key giả qua `monkeypatch`), assert cả request gửi đi lẫn kết quả trả về. Có test guardrail: `send` không gọi mạng khi thiếu token; `policy` đưa dòng injection probe vào `untrusted_text` chứ không vào `facts`.
 - Kết quả: toàn suite 107 passed, 0 skipped, 0 failed.
 
-### Phần TV4
+### UI, Demo, Báo cáo
 
 **UI Streamlit (`starter_v0/app.py`)**
 
@@ -72,7 +70,7 @@
 
 - Commit trên nhánh `feat/huuthinh` (PR #2):
   - `3c4d555` — _feat(ui): add Streamlit UI for the research agent_: [`app.py`](../../starter_v0/app.py), [`show_failures.py`](../../starter_v0/scripts/show_failures.py), dòng `streamlit` trong [`requirements.txt`](../../starter_v0/requirements.txt).
-  - `ae13168` — transcript chat live và các mục báo cáo TV4.
+  - `ae13168` — transcript chat live và các mục báo cáo (A1, A3, B4, B5a, mục 5, mục 8).
   - `72c91e3` — _feat(eval): add 10 group eval cases and implement all TODO tool tests_: [`eval_group.json`](../../starter_v0/data/eval_group.json), [`test_tools_todo.py`](../../starter_v0/tests/test_tools_todo.py).
   - `c0959ae` — run eval nhóm hợp lệ và bảng B3.
 - Run eval nhóm: [`v3_B_group_gemini_20261111T101011513780.json`](../../starter_v0/runs/v3_B_group_gemini_20261111T101011513780.json) (10/10 PASS, `provider_error_cases = 0`).
@@ -100,6 +98,6 @@
 
 > _(Nháp — tự sửa lại theo đánh giá của bản thân)_
 
-- Làm tốt: hoàn thành cả phần TV3 và TV4 với bằng chứng hợp lệ (run group 10/10, transcript v3, UI chạy thật); `pytest` đạt 0 skipped; phát hiện run v3 base chưa hợp lệ và lỗi hash do ký tự xuống dòng.
+- Làm tốt: hoàn thành cả mảng Test + Eval lẫn UI, Demo, Báo cáo với bằng chứng hợp lệ (run group 10/10, transcript v3, UI chạy thật); `pytest` đạt 0 skipped; phát hiện run v3 base chưa hợp lệ và lỗi hash do ký tự xuống dòng.
 - Chưa tốt: chưa quản lý quota Gemini từ đầu nên mất nhiều request vào các lần chạy lỗi; lượt `timeline` trong transcript bị lỗi do chưa điền `RAPIDAPI_KEY` trước khi chat live; chưa subscribe RapidAPI nên tool Twitter vẫn lỗi 403.
 - Nếu làm lại: chuẩn bị đủ key cho mọi tool và nhiều key Gemini ở các project khác nhau trước buổi lab; chạy preflight cho từng tool trước khi chat live và chạy eval.

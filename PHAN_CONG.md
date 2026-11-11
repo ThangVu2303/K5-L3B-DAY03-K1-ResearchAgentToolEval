@@ -1,4 +1,4 @@
-# Phân công công việc — Day 03 Research Agent Tool Eval (nhóm 4 người)
+# Phân công công việc — Day 03 Research Agent Tool Eval (nhóm 3 người)
 
 > Mọi lệnh chạy trong thư mục `starter_v0/`. Chi tiết lệnh: xem [README.md](README.md) và [starter_v0/README.md](starter_v0/README.md).
 > Deadline: **23:59 ngày lab (GMT+7)**. Run dùng làm bằng chứng phải có `provider_error_cases == 0` và `measured_cases == total_cases`.
@@ -9,21 +9,20 @@
 |---|---|---|---|
 | TV1 — Nhóm trưởng / Prompt | Vũ Đình Thắng | 2A202603753 | C1, C3 |
 | TV2 — Tool declaration + Tool mới | Nguyễn Nhật Minh | 2A202603745 | C2, C4 |
-| TV3 — Test + Eval | ~~Vũ Bá Tùng Lâm~~ → **Nguyễn Hữu Thịnh** (chuyển việc 11/11) | 2A202603726 | C4, C5 |
-| TV4 — UI, Demo, Báo cáo | Nguyễn Hữu Thịnh | 2A202603726 | C6, C7 |
+| TV3 — Test + Eval, UI, Demo, Báo cáo | Nguyễn Hữu Thịnh | 2A202603726 | C4, C5, C6, C7 |
 
 ## Trạng thái hiện tại
 
-- [x] `starter_v0/app.py` (Streamlit) đã có bản đầu (TV4)
+- [x] `starter_v0/app.py` (Streamlit) đã có bản đầu (TV3)
 - [x] `streamlit` đã thêm vào `requirements.txt`
 - [x] `starter_v0/tools/hn_search/` đã phát triển và đăng ký thành công (TV2)
 - [x] `starter_v0/artifacts/tools.yaml` đã viết lại đầy đủ descriptions và conventions (TV2)
 - [x] `starter_v0/artifacts/system_prompt.md` đã cải tiến từ v0 -> v3 đạt 100% accuracy (TV1)
 - [x] Các run v0, v1, v2, v3 đã hoàn thành với 0 lỗi provider và ghi đầy đủ vào `version_log.csv` (TV1)
 - [x] Bảng B1, B2, B6 trong `group_report.md` đã hoàn thiện (TV1)
-- [x] `data/eval_group.json` 10 eval case nhóm + run `--suite group` v3 hợp lệ 10/10, bảng B3 (TV3 — Thịnh)
-- [x] 14 stub test của tool có sẵn đã viết thật: `pytest` 107 passed, 0 skipped (TV3 bonus — Thịnh)
-- [x] UI Streamlit + link Cloudflare Tunnel, chat live transcript v3, Phần A (A1, A3), B4, dòng UI B5a (TV4 — Thịnh)
+- [x] `data/eval_group.json` 10 eval case nhóm + run `--suite group` v3 hợp lệ 10/10, bảng B3 (TV3)
+- [x] 14 stub test của tool có sẵn đã viết thật: `pytest` 107 passed, 0 skipped (TV3, bonus)
+- [x] UI Streamlit + link Cloudflare Tunnel, chat live transcript v3, Phần A (A1, A3), B4, dòng UI B5a (TV3)
 - [ ] Run v3 base hiện có `provider_error_cases = 1` (M05) → TV1 chạy lại v3, cập nhật B1 và `version_log.csv`
 - [ ] Merge PR #2 (`feat/huuthinh`) và chốt commit trong `TEAM.md` (TV1)
 
@@ -67,7 +66,9 @@ Lưu ý: tên tham số trong yaml phải có trong chữ ký hàm. Không đổ
 
 ---
 
-## TV3 — Test + Eval (C4, C5: 10đ) — người thực hiện: Nguyễn Hữu Thịnh
+## TV3 — Test + Eval, UI, Demo, Báo cáo (C5: 10đ, C6: 10đ, C7: 10đ)
+
+### Test + Eval
 
 | # | Việc | File | Mốc | Trạng thái |
 |---|---|---|---|---|
@@ -81,9 +82,7 @@ Lưu ý: tên tham số trong yaml phải có trong chữ ký hàm. Không đổ
 
 Lưu ý: không chép case có sẵn trong `eval_base.json`. Trong `expect.args` chỉ ghi những arg chắc chắn đúng.
 
----
-
-## TV4 — UI, Demo, Báo cáo (C6: 10đ, C7: 10đ)
+### UI, Demo, Báo cáo
 
 | # | Việc | File | Mốc | Trạng thái |
 |---|---|---|---|---|
@@ -101,7 +100,7 @@ Lưu ý: kiểm tra transcript không chứa key/token trước khi commit.
 
 ---
 
-## Việc chung của cả 4 người (C8: 10đ)
+## Việc chung của cả 3 người (C8: 10đ)
 
 - [ ] Có ít nhất **1 commit kỹ thuật** của chính mình (code, test, eval, prompt — không chỉ sửa báo cáo)
 - [ ] Viết báo cáo cá nhân `report/team/<MSSV>_<HoTen>.md` (copy từ `MSSV_HoTen.md`)
@@ -122,8 +121,8 @@ Lưu ý: kiểm tra transcript không chứa key/token trước khi commit.
 TV1 v0 hợp lệ ──► TV1 v1 (prompt) ──► TV1 v2 ──► TV1 v3
 TV2 tools.yaml ─────────────────────────┘
 TV2 tool mới ──► TV3 unit test ──► TV3 eval case cho tool mới ──► run group (v3)
-TV4 UI (làm độc lập) ──► link showdown 16:30
-TV4 chat live (cần v2/v3) ──► B4
+TV3 UI (làm độc lập) ──► link showdown 16:30
+TV3 chat live (cần v2/v3) ──► B4
 ```
 
 ## Mốc thời gian
@@ -133,6 +132,6 @@ TV4 chat live (cần v2/v3) ──► B4
 | 15:00 | v0 hợp lệ + bảng B2 (TV1) |
 | 15:30 | v1 (TV1); tool mới + 3 test (TV2, TV3) |
 | 16:00 | `tools.yaml` mới + v2 (TV2, TV1); 10 eval case + run group (TV3) |
-| 16:30 | Link UI + Phần A báo cáo (TV4) |
+| 16:30 | Link UI + Phần A báo cáo (TV3) |
 | 17:30 | v3 (TV1); Phần B (cả nhóm) |
 | 23:59 | Push + mỗi người nộp link trên LMS |

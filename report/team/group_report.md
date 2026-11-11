@@ -13,8 +13,7 @@
 - Thành viên và phân công: xem [TEAM.md](../../TEAM.md)
   + TV1: Vũ Đình Thắng (Nhóm trưởng / Prompt Engineer — C1, C3)
   + TV2: Nguyễn Nhật Minh (Tool Declaration & Custom Tool — C2, C4)
-  + TV3: phân công ban đầu cho Vũ Bá Tùng Lâm (Test & Eval — C5); phần việc TV3 do Nguyễn Hữu Thịnh thực hiện
-  + TV3 + TV4: Nguyễn Hữu Thịnh (Eval nhóm, Test, UI, Demo & Báo cáo — C5, C6, C7)
+  + TV3: Nguyễn Hữu Thịnh (Test & Eval, UI, Demo & Báo cáo — C5, C6, C7)
 - Provider/model dùng cho v0–v3: Google Gemini (`gemini-3.5-flash`)
 
 ## 2. Mục tiêu và cách tiếp cận — PHẦN A: Giới thiệu agent
@@ -213,7 +212,7 @@ Lỗi đặc thù của model nhỏ (đếm từ run JSON):
 - **Lỗi Provider và Hạn ngạch API (429 RESOURCE_EXHAUSTED):** Ban đầu gặp lỗi cạn quota do chính sách Free Tier của Google AI Studio giới hạn 20 requests/ngày cho mỗi project. Nhóm đã xử lý bằng cách: tối ưu `gemini_provider.py` (thêm delay an toàn 3s giữa các request, bổ sung cơ chế retry với exponential backoff khi gặp lỗi 429/503), chuyển đổi model sang `gemini-3.5-flash`, và phân bổ key hợp lý cho từng phiên bản để đảm bảo mọi run làm bằng chứng đều có `provider_error_cases == 0` và `measured_cases == 20`.
 - **Ranh giới an toàn (Confirmation Boundary):** Starter prompt ban đầu có chỉ dẫn nguy hiểm ("tự gửi đi để user không phải đợi"). Nhóm đã loại bỏ chỉ dẫn này, áp dụng quy tắc bắt buộc xin xác nhận qua `clarify(response_type="yes_no")` trước khi kích hoạt `send`.
 - **Over-clarification:** Ở v1 model có xu hướng hỏi lại quá nhiều cả khi user đã cung cấp handle `@sama`. Nhóm đã tinh chỉnh prompt ở v2/v3 để model phân biệt rõ khi nào đủ thông tin thì gọi `timeline`, chỉ thiếu hẳn mới gọi `clarify`.
-- **Quota khi chạy UI/chat live (TV4):** UI và `chat.py` tốn 1–3 request cho mỗi câu (mỗi vòng tool là 1 request), nên quota free 20 request/ngày/project hết rất nhanh; tạo key mới trong cùng project không giúp được vì quota tính theo project. Cách xử lý: dùng key ở project khác, để dành quota cho chat live thật và showdown. UI hiện rõ lỗi 429 thay vì treo hay che lỗi.
+- **Quota khi chạy UI/chat live (TV3):** UI và `chat.py` tốn 1–3 request cho mỗi câu (mỗi vòng tool là 1 request), nên quota free 20 request/ngày/project hết rất nhanh; tạo key mới trong cùng project không giúp được vì quota tính theo project. Cách xử lý: dùng key ở project khác, để dành quota cho chat live thật và showdown. UI hiện rõ lỗi 429 thay vì treo hay che lỗi.
 - **Thiếu `RAPIDAPI_KEY` khi chat live:** ở lượt "Của Andrej Karpathy" (B4, lượt 3), model gọi đúng `timeline(screenname="karpathy", limit=5)` nhưng tool trả `Missing RAPIDAPI_KEY`. Đây là lỗi môi trường chứ không phải lỗi routing; key đã được bổ sung sau đó. Bằng chứng: [transcript v3](../../starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json).
 - **Hash prompt lệch do ký tự xuống dòng trên Windows:** git trên Windows tự đổi LF ↔ CRLF khi checkout, làm `prompt_hash` khác với dòng v3 trong `version_log.csv` dù nội dung giống hệt. Cách xử lý: UI so khớp hash theo cả hai kiểu xuống dòng để nhận đúng version; khi chat live dùng đúng bản prompt có hash `pd5ffefbef293`.
 - **Link tunnel trả 502 lúc đầu:** `cloudflared` chạy trước khi bật Streamlit nên không có gì ở cổng 8501 (`connection refused`). Cách xử lý: bật `streamlit run app.py` trước, giữ cả hai terminal chạy suốt buổi demo.
@@ -222,8 +221,7 @@ Lỗi đặc thù của model nhỏ (đếm từ run JSON):
 
 - **Vũ Đình Thắng (TV1 — C1, C3):** Thiết lập môi trường và sửa lỗi provider (`gemini_provider.py`); chạy baseline v0 hợp lệ và phân tích 9 failure cases (Bảng B2); thực hiện chuỗi cải tiến lặp v0 ➔ v1 ➔ v2 ➔ v3 trên `system_prompt.md`, đưa độ chính xác từ 55.0% lên 100.0%; ghi nhận lịch sử phiên bản `version_log.csv`; hoàn thiện B1, B2, Mục 1, 3, 5, 7 trong báo cáo nhóm.
 - **Nguyễn Nhật Minh (TV2 — C2, C4):** Viết lại khai báo cho 10 công cụ trong `artifacts/tools.yaml`; phát triển công cụ mới `hn_search` kèm `TOOL.md` và đăng ký registry; viết tài liệu bàn giao `TOOL-HANDOFF.md`, Mục A2 và B5a.
-- **Vũ Bá Tùng Lâm (phân công ban đầu: TV3 — C5):** Phần việc TV3 (eval nhóm, B3, test) đã chuyển cho Nguyễn Hữu Thịnh thực hiện. Đóng góp thực tế của Lâm: xem [TEAM.md](../../TEAM.md).
-- **Nguyễn Hữu Thịnh (TV3 + TV4 — C5, C6, C7):** *TV3:* viết 10 eval case trong `data/eval_group.json` (4 case route tới `hn_search`), chạy `--suite group` hợp lệ với v3 (10/10 PASS) và điền B3; thay 14 stub test của tool có sẵn (`pytest` 107 passed, 0 skipped). *TV4:* phát triển UI Streamlit `app.py` và `scripts/show_failures.py`; mở tunnel demo public; chat live v3 và viết B4; hoàn thiện A1, A3, dòng UI B5a, mục 5, mục 8 và tổng hợp báo cáo. Commit `3c4d555`, `ae13168`, `72c91e3`, `c0959ae`.
+- **Nguyễn Hữu Thịnh (TV3 — C5, C6, C7):** *Test + Eval:* viết 10 eval case trong `data/eval_group.json` (4 case route tới `hn_search`), chạy `--suite group` hợp lệ với v3 (10/10 PASS) và điền B3; thay 14 stub test của tool có sẵn (`pytest` 107 passed, 0 skipped). *UI, Demo, Báo cáo:* phát triển UI Streamlit `app.py` và `scripts/show_failures.py`; mở tunnel demo public; chat live v3 và viết B4; hoàn thiện A1, A3, dòng UI B5a, mục 5, mục 8 và tổng hợp báo cáo. Commit `3c4d555`, `ae13168`, `72c91e3`, `c0959ae`.
 
 Chi tiết đóng góp của từng thành viên nằm trong [TEAM.md](../../TEAM.md) và các báo cáo cá nhân `report/team/MSSV_HoTen.md`.
 
