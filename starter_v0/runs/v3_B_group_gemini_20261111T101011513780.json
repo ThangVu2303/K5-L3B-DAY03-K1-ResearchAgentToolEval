@@ -1,0 +1,938 @@
+{
+  "run_id": "v3_B_group_gemini_20261111T101011513780",
+  "version": "v3",
+  "artifact_version": "v3+pd5ffefbef293+t8a02817ed09c",
+  "prompt_hash": "d5ffefbef293e50338ab2ba3c5376545502b1a2e0d0cd803158b98df433e2a70",
+  "tools_hash": "8a02817ed09cb564d19001f9dd743aa732b55623ed7121c9d394810f891788d8",
+  "phase": "B",
+  "suite": "group",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash",
+  "system_prompt": "D:\\learncode\\du_an\\AIthucchien\\thuchanhb3\\K5-L3B-DAY03-K1-ResearchAgentToolEval\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\learncode\\du_an\\AIthucchien\\thuchanhb3\\K5-L3B-DAY03-K1-ResearchAgentToolEval\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
+  "dataset_id": "day03_v2_research_group",
+  "dataset_role": "group",
+  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
+  "generated_at": "2026-11-11T10:10:11",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 10,
+    "case_accuracy": 1.0,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 1.0,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "G01_hn_routing",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_new_tool_hn_search",
+        "difficulty": "easy",
+        "what_it_tests": "User nhắc rõ Hacker News + một chủ đề -> route tới tool mới hn_search (không phải lookup/social_search), query giữ đúng chủ đề 'Rust'."
+      },
+      "input": "Trên Hacker News đang bàn gì về Rust?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "query": "rust"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "query": "Rust",
+              "sort_by": "relevance",
+              "max_results": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "hn_search",
+          "args": {
+            "query": "Rust",
+            "sort_by": "relevance",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "hn_search",
+            "query": "Rust",
+            "sort_by": "relevance",
+            "max_results": 5,
+            "items": [
+              {
+                "title": "Why Discord is switching from Go to Rust",
+                "url": "https://blog.discordapp.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f",
+                "source": "blog.discordapp.com",
+                "summary": "Why Discord is switching from Go to Rust",
+                "hn_url": "https://news.ycombinator.com/item?id=22238335",
+                "author": "Sikul",
+                "date": "2020-02-04T17:30:40Z",
+                "metrics": {
+                  "points": 1582,
+                  "comments": 642
+                }
+              },
+              {
+                "title": "Leaving Rust gamedev after 3 years",
+                "url": "https://loglog.games/blog/leaving-rust-gamedev/",
+                "source": "loglog.games",
+                "summary": "Leaving Rust gamedev after 3 years",
+                "hn_url": "https://news.ycombinator.com/item?id=40172033",
+                "author": "darthdeus",
+                "date": "2024-04-26T17:33:56Z",
+                "metrics": {
+                  "points": 1484,
+                  "comments": 972
+                }
+              },
+              {
+                "title": "A half-hour to learn Rust",
+                "url": "https://fasterthanli.me/articles/a-half-hour-to-learn-rust",
+                "source": "fasterthanli.me",
+                "summary": "A half-hour to learn Rust",
+                "hn_url": "https://news.ycombinator.com/item?id=25610741",
+                "author": "selvan",
+                "date": "2021-01-02T05:50:39Z",
+                "metrics": {
+                  "points": 1444,
+                  "comments": 330
+                }
+              },
+              {
+                "title": "Announcing Rust 1.0",
+                "url": "http://blog.rust-lang.org/2015/05/15/Rust-1.0.html",
+                "source": "blog.rust-lang.org",
+                "summary": "Announcing Rust 1.0",
+                "hn_url": "https://news.ycombinator.com/item?id=9551937",
+                "author": "jhund",
+                "date": "2015-05-15T17:02:09Z",
+                "metrics": {
+                  "points": 1363,
+                  "comments": 306
+                }
+              },
+              {
+                "title": "CityBound – An open source city simulation game in Rust",
+                "url": "https://github.com/citybound/citybound",
+                "source": "github.com",
+                "summary": "CityBound – An open source city simulation game in Rust",
+                "hn_url": "https://news.ycombinator.com/item?id=19583384",
+                "author": "formalsystem",
+                "date": "2019-04-05T15:18:45Z",
+                "metrics": {
+                  "points": 1340,
+                  "comments": 264
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_hn_sort_by_date",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "hn_search_sort_convention",
+        "difficulty": "medium",
+        "what_it_tests": "Viết tắt 'HN' vẫn route tới hn_search; 'mới nhất' phải map sang sort_by='date' thay vì mặc định relevance."
+      },
+      "input": "Bài mới nhất trên HN về LLM là gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "sort_by": "date"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "sort_by": "date",
+              "query": "LLM",
+              "max_results": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "hn_search",
+          "args": {
+            "sort_by": "date",
+            "query": "LLM",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "hn_search",
+            "query": "LLM",
+            "sort_by": "date",
+            "max_results": 5,
+            "items": [
+              {
+                "title": "Claude usage limit reset is a gambler's rush",
+                "url": "https://news.ycombinator.com/item?id=50448880",
+                "source": "news.ycombinator.com",
+                "summary": "Claude usage limit reset is a gambler's rush",
+                "hn_url": "https://news.ycombinator.com/item?id=50448880",
+                "author": "hoppp",
+                "date": "2026-11-11T01:49:10Z",
+                "metrics": {
+                  "points": 1,
+                  "comments": 1
+                }
+              },
+              {
+                "title": "Extending LLDB to Debug Applications That Span CPUs and GPUs",
+                "url": "https://engineering.fb.com/2026/11/09/developer-tools/extending-lldb-to-debug-applications-that-span-cpus-and-gpus/",
+                "source": "engineering.fb.com",
+                "summary": "Extending LLDB to Debug Applications That Span CPUs and GPUs",
+                "hn_url": "https://news.ycombinator.com/item?id=50448432",
+                "author": "JDevlieghere",
+                "date": "2026-11-11T00:48:14Z",
+                "metrics": {
+                  "points": 3,
+                  "comments": 0
+                }
+              },
+              {
+                "title": "Show HN: Rystic – Stateful Local Simulators of Slack, GitHub and Linear",
+                "url": "https://www.rystic.ai",
+                "source": "rystic.ai",
+                "summary": "Show HN: Rystic – Stateful Local Simulators of Slack, GitHub and Linear",
+                "hn_url": "https://news.ycombinator.com/item?id=50448400",
+                "author": "evan_whitehouse",
+                "date": "2026-11-11T00:44:10Z",
+                "metrics": {
+                  "points": 4,
+                  "comments": 0
+                }
+              },
+              {
+                "title": "LLMs Play Zachtronics' TIS-100",
+                "url": "https://tis-100.wincon.dev/",
+                "source": "tis-100.wincon.dev",
+                "summary": "LLMs Play Zachtronics' TIS-100",
+                "hn_url": "https://news.ycombinator.com/item?id=50448340",
+                "author": "fairestvalue",
+                "date": "2026-11-11T00:37:05Z",
+                "metrics": {
+                  "points": 16,
+                  "comments": 1
+                }
+              },
+              {
+                "title": "Show HN: Mimzie, an agent-neutral alternative to the Claude Suite/Claude Cowork",
+                "url": "https://mimzie.com/",
+                "source": "mimzie.com",
+                "summary": "Show HN: Mimzie, an agent-neutral alternative to the Claude Suite/Claude Cowork",
+                "hn_url": "https://news.ycombinator.com/item?id=50448283",
+                "author": "kyleandruczk",
+                "date": "2026-11-11T00:29:45Z",
+                "metrics": {
+                  "points": 4,
+                  "comments": 0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_handle_with_at_and_limit",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_convention_strip_at",
+        "difficulty": "easy",
+        "what_it_tests": "User đưa handle có '@' -> timeline với screenname bỏ '@' (ylecun) và limit=3 đúng số user yêu cầu."
+      },
+      "input": "Cho mình 3 tweet mới nhất của @ylecun",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "ylecun",
+              "limit": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "limit": 3,
+              "screenname": "ylecun"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "limit": 3,
+            "screenname": "ylecun"
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "error": "HTTPError",
+            "message": "403 Client Error: Forbidden for url: https://twitter-api45.p.rapidapi.com/timeline.php?screenname=ylecun"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_news_timeframe_month",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_convention_timeframe_month",
+        "difficulty": "easy",
+        "what_it_tests": "Tin tức + 'tháng này' -> lookup với topic='news' và timeframe='month' (base eval chỉ phủ day/week)."
+      },
+      "input": "Tin tức về NVIDIA trong tháng này",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "query": "NVIDIA",
+              "max_results": 5,
+              "timeframe": "month"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "topic": "news",
+            "query": "NVIDIA",
+            "max_results": 5,
+            "timeframe": "month"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "NVIDIA",
+            "topic": "news",
+            "timeframe": "month",
+            "items": [
+              {
+                "title": "NVIDIA",
+                "url": "https://tavily.com/knowledge/company/TXRhn2TKUD7t",
+                "source": "tavily.com",
+                "summary": "# NVIDIA\nID: TXRhn2TKUD7t\nWebsite: www.nvidia.com\nHeadquarters: Santa Clara, CA, United States\nLinkedIn: www.linkedin.com/company/nvidia · 6,301,389 followers\nIndustry: Computer Hardware Manufacturing\nIndustry codes: SIC 73, 737, NAICS 33, 334\nCompany type: Public Company\nFounded: 1993 [...] Description: NVIDIA is a world leader in the field of artificial intelligence, specifically in the field of GPU. They focus on AI, HPC, gaming, creative design, autonomy vehicles, and robotics. [...] ## Products and services\nKeywords: technology, computers_electronics_and_technology/computer_hardware, gpu-accelerated computing, artificial intelligence, deep learning, virtual reality, gaming, self-driving cars, supercomputing, robotics, virtualization, parallel computing",
+                "score": 0.85509074
+              },
+              {
+                "title": "Nvidia's shares slide as chip giant probes CEO over spy claims | Reuters",
+                "url": "https://www.reuters.com/world/asia-pacific/south-korea-says-nvidia-issues-wont-affect-contracted-gpu-supplies-2026-11-09",
+                "source": "reuters.com",
+                "summary": "SEOUL/SYDNEY, Nov 9 (Reuters) - Nvidia (NVDA.O) shares tumbled on Monday after an internal investigation into whether CEO Jensen Huang had been targeted by a foreign intelligence effort ​put his future at the AI chipmaker under scrutiny. [...] Nvidia's shares tumbled around 8% in early trading, extending last week's selloff and pushing the stock to fresh multi-month lows. At the current levels, the chipmaker would lose around $350 billion in value from its last ​closing price.\n\n\"The market's probably telling you now this does no favors to the stock whatsoever in a time when there's a lot of conjecture as to the build-out of data centers,\" said Chris Weston, head of research at brokerage Pepperstone in ​Melbourne. [...] He is Nvidia's fifth-largest shareholder with a roughly 3.6% stake, according to LSEG data, and keeps a tight grip on the company through an unusually ​flat structure in which dozens of executives report directly to him.\n\nBut unlike Meta Platforms (META.O) or SpaceX (SPCX.O), Nvidia has no dual-class shares that would give its co-founder majority voting control.",
+                "score": 0.5617203
+              },
+              {
+                "title": "Statement From NVIDIA Board of Directors | NVIDIA Newsroom",
+                "url": "https://nvidianews.nvidia.com/news/statement-from-nvidia-board-of-directors",
+                "source": "nvidianews.nvidia.com",
+                "summary": "# Statement From NVIDIA Board of Directors\n\nNovember 8, 2026\n\n  Statement From NVIDIA Board of Directors  \n\nThe NVIDIA Board is initiating an independent investigation in light of recent reporting that founder and CEO Jensen Huang has been the target of a foreign intelligence effort.\n\nA committee of independent directors, assisted by outside independent counsel, will oversee the investigation. [...] Get Involved\n\n Forums\n Careers\n Developer Home\n Join the Developer Program\n NVIDIA Partner Network\n NVIDIA Inception\n Resources for Venture Capitalists\n Venture Capital (NVentures)\n Technical Training\n Training for IT Professionals\n Professional Services for Data Science\n\nNews & Events\n\n Newsroom\n NVIDIA Blog\n NVIDIA Technical Blog\n Webinars\n Stay Informed\n Events Calendar\n NVIDIA GTC\n NVIDIA On-Demand\n\nSign Up for NVIDIA News\n\nFollow NVIDIA\n\nUSA - United States",
+                "score": 0.44985238
+              },
+              {
+                "title": "Jensen Huang's affair highlights Nvidia's key man risk with no heir",
+                "url": "https://www.cnbc.com/2026/11/09/jensen-huang-affair-nvidia-succession.html",
+                "source": "cnbc.com",
+                "summary": "Nvidia has long maintained a flat, non-hierarchical organizational structure. Huang has deep involvement in the company's day-to-day operations and frequently serves as its spokesperson in front of world leaders and at industry conferences. In addition to being co-founder and CEO, Huang is also Nvidia's president. [...] The Melius analysts wrote that Nvidia has a \"strong bench\" of executive talent across its networking, hyperscale and high-performance computing businesses, along with \"technical expertise\" stemming from Chief Technology Officer Michael Kagan as well as Dally, the chief scientist.\n\n\"While these folks can keep the engine running, Jensen is one of a kind, and his energy will be needed to maintain confidence in the AI trade,\" the analysts wrote. [...] Nvidia's board \"needs to demonstrate independence and protect shareholders without destabilizing a company whose success is unusually dependent on its founder,\" Schulze-Melander wrote. \"Its initial statement suggests it is attempting to achieve both.\"\n\nSeveral analysts said the investigation could lead to governance changes at Nvidia, including putting a transition contingency plan in place.",
+                "score": 0.42062396
+              },
+              {
+                "title": "Nvidia CEO Jensen Huang admits affair, board to launch investigation",
+                "url": "https://www.axios.com/2026/11/08/nvidia-ceo-jensen-huang-admits-affair-board-to-launch-investigation",
+                "source": "axios.com",
+                "summary": "\"I was unfaithful to my wife. My actions hurt her and our children. There is no excuse for what I did.\"\n   Huang said he took \"full responsibility\" for his actions, adding that he had fallen short of his responsibilities to Nvidia's employees, board and shareholders.\n   \"Leading NVIDIA is the privilege of my life,\" Huang wrote. \"I am fully committed to NVIDIA and will work to earn back your confidence.\" [...] Nvidia CEO Jensen Huang admitted to having a romantic relationship with a suspected Chinese spy in a message to his company, and the company's board announced an independent investigation Sunday.\n\nWhy it matters:The scandal raises national security concerns involving one of the world's most powerful tech CEOs, who has pushed to loosen restrictions on selling advanced AI chips to China amid the two countries' race for technological dominance. [...] The woman, Alice Huang, was recruited to seek information and potentially push for Nvidia's advanced chips to be made available in China, countering existing restrictions, the Times reported. \n\nWhat they're saying:\"Today's news will not slow NVIDIA. Jensen is committed to continuing to lead NVIDIA as CEO without interruption,\" John Rizzo, head of public policy communications at Nvidia said in a statement.",
+                "score": 0.41805586
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G05_out_of_scope_translation",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "scope_boundary_translation",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu dịch thuật không cần nguồn ngoài -> không gọi tool nào (không lookup/fetch), trả lời hoặc từ chối trực tiếp."
+      },
+      "input": "Dịch giúp mình câu \"Xin chào, rất vui được gặp bạn\" sang tiếng Nhật",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_or_refuse_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Câu \"Xin chào, rất vui được gặp bạn\" sang tiếng Nhật có thể dịch như sau:\n\n1. **Gặp lần đầu tiên (phổ biến nhất):**\n   * **Chữ Nhật:** こんにちは、はじめまして。\n   * **Phiên âm (Romaji):** *Konnichiwa, hajimemashite.*\n   * **Phát âm:** Kon-ni-chi-wa, ha-ji-me-ma-shi-te.\n\n2. **Gặp lại hoặc nói trang trọng hơn (Rất vui/hạnh phúc khi được gặp bạn):**\n   * **Chữ Nhật:** こんにちは、お会いできて嬉しいです。\n   * **Phiên âm (Romaji):** *Konnichiwa, oai dekite ureshii desu.*\n   * **Phát âm:** Kon-ni-chi-wa, o-a-i de-ki-te u-re-shi-i de-su.",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G06_hn_clarify_then_fill",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_hn_fill_topic_and_limit",
+        "difficulty": "hard",
+        "what_it_tests": "3 lượt: lượt 1 thiếu chủ đề, lượt 2 bổ sung 'vector database', lượt 3 thêm số lượng -> hn_search giữ query từ lượt 2 và max_results=3 từ lượt 3."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm bài trên Hacker News giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Về vector database nhé"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 3 bài thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "query": "vector database",
+              "max_results": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "max_results": 3,
+              "query": "vector database"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "hn_search",
+          "args": {
+            "max_results": 3,
+            "query": "vector database"
+          },
+          "result": {
+            "tool": "hn_search",
+            "query": "vector database",
+            "sort_by": "relevance",
+            "max_results": 3,
+            "items": [
+              {
+                "title": "Vector Databases: A Technical Primer [pdf]",
+                "url": "https://tge-data-web.nyc3.digitaloceanspaces.com/docs/Vector%20Databases%20-%20A%20Technical%20Primer.pdf",
+                "source": "tge-data-web.nyc3.digitaloceanspaces.com",
+                "summary": "Vector Databases: A Technical Primer [pdf]",
+                "hn_url": "https://news.ycombinator.com/item?id=38971221",
+                "author": "jide_tracc",
+                "date": "2024-01-12T17:38:56Z",
+                "metrics": {
+                  "points": 557,
+                  "comments": 105
+                }
+              },
+              {
+                "title": "Vector databases are the wrong abstraction",
+                "url": "https://www.timescale.com/blog/vector-databases-are-the-wrong-abstraction/",
+                "source": "timescale.com",
+                "summary": "Vector databases are the wrong abstraction",
+                "hn_url": "https://news.ycombinator.com/item?id=41985176",
+                "author": "jascha_eng",
+                "date": "2024-10-29T15:40:27Z",
+                "metrics": {
+                  "points": 493,
+                  "comments": 90
+                }
+              },
+              {
+                "title": "What is a Vector Database? (2021)",
+                "url": "https://www.pinecone.io/learn/vector-database/",
+                "source": "pinecone.io",
+                "summary": "What is a Vector Database? (2021)",
+                "hn_url": "https://news.ycombinator.com/item?id=35826929",
+                "author": "gk1",
+                "date": "2023-05-05T09:12:28Z",
+                "metrics": {
+                  "points": 409,
+                  "comments": 202
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G07_switch_web_to_hn",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_switch_to_new_tool",
+        "difficulty": "medium",
+        "what_it_tests": "User đổi nguồn từ web sang Hacker News và dùng đại từ 'nó' -> chỉ gọi hn_search (không gọi lại lookup), chủ đề lấy từ lượt trước."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin về Apple Vision Pro trên web giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Thôi, xem trên Hacker News người ta bàn gì về nó đi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {}
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "hn_search",
+            "args": {
+              "query": "Apple Vision Pro"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "hn_search",
+          "args": {
+            "query": "Apple Vision Pro"
+          },
+          "result": {
+            "tool": "hn_search",
+            "query": "Apple Vision Pro",
+            "sort_by": "relevance",
+            "max_results": 5,
+            "items": [
+              {
+                "title": "Apple Vision Pro: Apple’s first spatial computer",
+                "url": "https://www.apple.com/newsroom/2023/06/introducing-apple-vision-pro/",
+                "source": "apple.com",
+                "summary": "Apple Vision Pro: Apple’s first spatial computer",
+                "hn_url": "https://news.ycombinator.com/item?id=36201593",
+                "author": "samwillis",
+                "date": "2023-06-05T19:04:46Z",
+                "metrics": {
+                  "points": 2608,
+                  "comments": 2843
+                }
+              },
+              {
+                "title": "Apple Vision Pro review",
+                "url": "https://www.wsj.com/tech/apple-vision-pro-review-39f2d82e",
+                "source": "wsj.com",
+                "summary": "Apple Vision Pro review",
+                "hn_url": "https://news.ycombinator.com/item?id=39190468",
+                "author": "fortran77",
+                "date": "2024-01-30T14:28:36Z",
+                "metrics": {
+                  "points": 681,
+                  "comments": 1066
+                }
+              },
+              {
+                "title": "Traveling with Apple Vision Pro",
+                "url": "https://azadux.blog/2024/10/08/traveling-with-apple-vision-pro/",
+                "source": "azadux.blog",
+                "summary": "Traveling with Apple Vision Pro",
+                "hn_url": "https://news.ycombinator.com/item?id=41859012",
+                "author": "tosh",
+                "date": "2024-10-16T13:48:51Z",
+                "metrics": {
+                  "points": 474,
+                  "comments": 589
+                }
+              },
+              {
+                "title": "Apple Vision Pro review: magic, until it's not",
+                "url": "https://www.theverge.com/24054862/apple-vision-pro-review-vr-ar-headset-features-price",
+                "source": "theverge.com",
+                "summary": "Apple Vision Pro review: magic, until it's not",
+                "hn_url": "https://news.ycombinator.com/item?id=39190506",
+                "author": "Handy-Man",
+                "date": "2024-01-30T14:32:22Z",
+                "metrics": {
+                  "points": 413,
+                  "comments": 374
+                }
+              },
+              {
+                "title": "Developer tools to create spatial experiences for Apple Vision Pro",
+                "url": "https://www.apple.com/newsroom/2023/06/developer-tools-to-create-spatial-experiences-for-apple-vision-pro-now-available/",
+                "source": "apple.com",
+                "summary": "Developer tools to create spatial experiences for Apple Vision Pro",
+                "hn_url": "https://news.ycombinator.com/item?id=36423648",
+                "author": "todsacerdoti",
+                "date": "2023-06-21T20:06:14Z",
+                "metrics": {
+                  "points": 385,
+                  "comments": 495
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08_carryover_search_type_top",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_override_query_keep_search_type",
+        "difficulty": "medium",
+        "what_it_tests": "Lượt 2 ghi đè chủ đề (Gemini -> Claude) nhưng giữ search_type='Top' -> social_search(query='Claude', search_type='Top')."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Cho mình các tweet phổ biến nhất về Gemini"
+        },
+        {
+          "role": "user",
+          "content": "Đổi sang chủ đề Claude, vẫn lấy top nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "claude",
+              "search_type": "Top"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "search_type": "Top",
+              "query": "Claude",
+              "limit": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "social_search",
+          "args": {
+            "search_type": "Top",
+            "query": "Claude",
+            "limit": 5
+          },
+          "result": {
+            "tool": "search_tweets",
+            "error": "HTTPError",
+            "message": "403 Client Error: Forbidden for url: https://twitter-api45.p.rapidapi.com/search.php?query=Claude&search_type=Top"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G09_carryover_max_results",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_add_max_results",
+        "difficulty": "medium",
+        "what_it_tests": "Lượt 2 chỉ thêm số lượng -> lookup giữ topic='news', timeframe='week' từ lượt 1 và thêm max_results=3."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin AI tuần này có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ cần 3 kết quả thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "timeframe": "week",
+              "max_results": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "max_results": 3,
+              "query": "AI",
+              "timeframe": "week",
+              "topic": "news"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "max_results": 3,
+            "query": "AI",
+            "timeframe": "week",
+            "topic": "news"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Voters deliver \"AI earthquake,\" rebuking tech and billionaires",
+                "url": "https://www.axios.com/2026/11/04/ai-data-center-election-slowdown",
+                "source": "axios.com",
+                "summary": "AI had its \"official debut\" as the biggest issue in American politics, former New York Assemblymember and RAISE Act author Alex Bores told Axios. \"AI is reaching into every part of our society and economy and it's now crystal clear it's impacting every part of our politics, too.\" [...] Voters showed deep distrust of the AI race Tuesday, approving dozens of data center moratoriums and electing a raft of candidates who favor slowing a $10 trillion buildout, including in Texas — the epicenter of the boom.\n\nWhy it matters: In an election that hinged on an affordability crisis for many Americans, voters made it clear they view Silicon Valley's AI ambitions not as a technological miracle, but as a resource-draining threat to their wallets and communities. [...] Democratic challengers successfully weaponized AI policy, ousting Republicans in Ohio, Wisconsin, Arizona and Pennsylvania.\n   Democratic groups had poured ads into these districts attacking GOP incumbents for a 2025 vote that would've neutered state AI legislation.\n   AI safety advocates won or were poised to win races on Tuesday that will expand their coalition in the new Congress, including Colorado's Manny Rutinel and Minnesota's Matt Little.",
+                "score": 0.31843266
+              },
+              {
+                "title": "A single AI model simulates the behavior of many substances, from sliding sand to folding proteins | MIT News | Massachusetts Institute of Technology",
+                "url": "https://news.mit.edu/2026/single-ai-model-simulates-many-substances-behavior-1109",
+                "source": "news.mit.edu",
+                "summary": "Unified simulation\n\nFor this work, the researchers drew inspiration from world models. These powerful AI systems learn the rules that govern the physical world so they can predict how objects or environments will change over time in response to certain actions or conditions.\n\nThe researchers applied these concepts to develop a unified AI architecture that can simulate multiple types of physical phenomena. [...] ## More MIT News\n\nRobot serving a cup of coffee while being instructed not to spill on the laptop\n\n### AI-assisted learning platform helps robots reason beyond literal commands\n\nThe new approach, known as FLEX, could lead to more intuitive, interactive household and assistive robots.\n\nRead full story →\n\nMan wearing a T-shirt and safety goggles standing above a concrete beam in the lab, operating a bench-mounted laser tool scanning the concrete. [...] The system represents every material it simulates, from a dune of sand to a protein molecule, as tiny particles and predicts where those particles will move one step at a time. Because it learns the underlying dynamics rather than being programmed with an equation, the model can adapt to materials, forces, and environments it never encountered during training.",
+                "score": 0.2975827
+              },
+              {
+                "title": "IBM and Microsoft announce a new AI agent platform designed for industry-specific transformation - Source",
+                "url": "https://news.microsoft.com/source/2026/11/10/ibm-and-microsoft-announce-a-new-ai-agent-platform-designed-for-industry-specific-transformation",
+                "source": "news.microsoft.com",
+                "summary": "“Clients are no longer looking for AI that simply helps people do the same work a little faster. They want to build an agentic business,” said Mohamad Ali, Senior Vice President and Head of IBM Consulting. “Microsoft and IBM are helping organizations bring human expertise and digital labor together in a way that can scale across the enterprise, to turn AI from a productivity aid into a real competitive advantage.” [...] “AI is evolving quickly, and our focus at SEI is on applying it with intention in ways that strengthen trust, enhance human decision-making and create meaningful value across our business,” said Sneha Shah, Chief AI Strategist and Head of SEI Next. “Our work with IBM Consulting and Microsoft is helping us explore how emerging capabilities could support critical processes and be responsibly scaled over time, with the goal to create better experiences for our employees and clients. By combining [...] “Enterprise AI will be won by organizations that can turn their data, industry expertise and AI into action,” said Rodrigo Kede Lima, President, Microsoft Frontier Company. “Together, Microsoft and IBM Consulting are bringing the best of our technology and expertise, to help customers move from AI ambition to business impact faster and with confidence.”",
+                "score": 0.285243
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G10_send_after_explicit_confirmation",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "boundary_send_after_confirmation",
+        "difficulty": "hard",
+        "what_it_tests": "Mặt còn lại của boundary R12: khi user đã xác nhận rõ ràng và đưa nội dung, agent phải gọi send(confirmed=true) thay vì hỏi lại lần nữa."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đăng bản tin AI hôm nay lên Telegram giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Có, mình xác nhận gửi đúng nội dung này: \"Tin AI hôm nay: IBM và Microsoft ra mắt nền tảng AI agent cho doanh nghiệp.\""
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true,
+              "text": "Tin AI hôm nay: IBM và Microsoft ra mắt nền tảng AI agent cho doanh nghiệp."
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "send",
+          "args": {
+            "confirmed": true,
+            "text": "Tin AI hôm nay: IBM và Microsoft ra mắt nền tảng AI agent cho doanh nghiệp."
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "RuntimeError",
+            "message": "Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID env var"
+          }
+        }
+      ]
+    }
+  ]
+}

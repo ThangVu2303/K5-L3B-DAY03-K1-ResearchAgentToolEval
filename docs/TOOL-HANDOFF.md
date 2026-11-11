@@ -64,9 +64,9 @@ bộ 10 case nhóm. Ví dụ đầu vào và kết quả mong đợi:
 
 Ví dụ trên là đề xuất case, chưa phải kết quả chạy model.
 
-## TV4 — Báo cáo nhóm
+## TV3 — Báo cáo nhóm
 
-A2 đã có đủ 11 tool. B5a đã có nguồn code, kết quả tool và unit test; TV4 tổng
+A2 đã có đủ 11 tool. B5a đã có nguồn code, kết quả tool và unit test; TV3 tổng
 hợp cùng phần UI/live chat. Xem [group_report.md](../report/team/group_report.md).
 
 ## Kiểm tra
