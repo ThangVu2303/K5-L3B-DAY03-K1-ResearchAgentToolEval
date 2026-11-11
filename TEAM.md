@@ -5,7 +5,7 @@
 - Tên nhóm: K1
 - Lớp: L3B
 - Repo nhóm: `K5-L3B-DAY03-K1-ResearchAgentToolEval`
-- URL repo, nhánh nộp, commit chốt: https://github.com/ThangVu2303/K5-L3B-DAY03-K1-ResearchAgentToolEval, nhánh vudinhthang, commit chốt: 4d07ea0
+- URL repo, nhánh nộp, commit chốt: https://github.com/ThangVu2303/K5-L3B-DAY03-K1-ResearchAgentToolEval, nhánh main, commit chốt: 0be9f08
 
 ## Thành viên
 
