@@ -13,8 +13,8 @@
 - Thành viên và phân công: xem [TEAM.md](../../TEAM.md)
   + TV1: Vũ Đình Thắng (Nhóm trưởng / Prompt Engineer — C1, C3)
   + TV2: Nguyễn Nhật Minh (Tool Declaration & Custom Tool — C2, C4)
-  + TV3: Vũ Bá Tùng Lâm (Test & Eval — C4, C5)
-  + TV4: Nguyễn Hữu Thịnh (UI, Demo & Báo cáo — C6, C7)
+  + TV3: phân công ban đầu cho Vũ Bá Tùng Lâm (Test & Eval — C5); phần việc TV3 do Nguyễn Hữu Thịnh thực hiện
+  + TV3 + TV4: Nguyễn Hữu Thịnh (Eval nhóm, Test, UI, Demo & Báo cáo — C5, C6, C7)
 - Provider/model dùng cho v0–v3: Google Gemini (`gemini-3.5-flash`)
 
 ## 2. Mục tiêu và cách tiếp cận — PHẦN A: Giới thiệu agent
@@ -83,7 +83,7 @@ Thử thêm câu ngoài phạm vi, ví dụ "Viết giúp mình hàm Fibonacci b
 - **Khai báo chuẩn hóa `tools.yaml` (TV2):**
   + Viết lại mô tả cho 10 tool có sẵn, phân định rõ ranh giới "khi nào nên dùng" và "khi nào KHÔNG ĐƯỢC dùng".
   + Chuẩn hóa quy ước tham số: handle không chứa ký tự `@`, định dạng `timeframe`, `search_type=Top|Latest`, tham số `confirmed=True` cho `send`.
-- **Phát triển tool mới `hn_search` (TV2 & TV3):**
+- **Phát triển tool mới `hn_search` (TV2):**
   + Tìm kiếm bài thảo luận trên Hacker News qua Algolia API (`query`, `max_results`, `sort_by=relevance|date`). Trả về error dict an toàn, không raise exception ra ngoài agent.
 
 ## 4. Kết quả — PHẦN B: Chi tiết và bằng chứng
@@ -222,9 +222,8 @@ Lỗi đặc thù của model nhỏ (đếm từ run JSON):
 
 - **Vũ Đình Thắng (TV1 — C1, C3):** Thiết lập môi trường và sửa lỗi provider (`gemini_provider.py`); chạy baseline v0 hợp lệ và phân tích 9 failure cases (Bảng B2); thực hiện chuỗi cải tiến lặp v0 ➔ v1 ➔ v2 ➔ v3 trên `system_prompt.md`, đưa độ chính xác từ 55.0% lên 100.0%; ghi nhận lịch sử phiên bản `version_log.csv`; hoàn thiện B1, B2, Mục 1, 3, 5, 7 trong báo cáo nhóm.
 - **Nguyễn Nhật Minh (TV2 — C2, C4):** Viết lại khai báo cho 10 công cụ trong `artifacts/tools.yaml`; phát triển công cụ mới `hn_search` kèm `TOOL.md` và đăng ký registry; viết tài liệu bàn giao `TOOL-HANDOFF.md`, Mục A2 và B5a.
-- **Vũ Bá Tùng Lâm (TV3 — C4, C5):** Viết bộ unit tests cho tool mới trong `tests/test_tools_todo.py`; xây dựng bộ đánh giá của nhóm gồm 10 cases trong `data/eval_group.json`; chạy eval suite group và hoàn thiện bảng B3, B5a.
-- **Nguyễn Hữu Thịnh (TV4 — C6, C7):** Phát triển ứng dụng Streamlit `app.py`; triển khai tunnel demo public; thực hiện các phiên chat live đa lượt, thu thập transcript vào `transcripts/` và viết bảng B4; hoàn thiện Mục A1, A3 và tổng hợp báo cáo. Làm thay phần TV3: viết 10 eval case trong `data/eval_group.json`, chạy `--suite group` hợp lệ (10/10 PASS) và điền B3; thay 14 stub test của tool có sẵn (`pytest` 107 passed, 0 skipped) — commit `72c91e3`.
-- *Ghi chú:* phần eval nhóm, B3 và 14 test nêu ở mục TV3 phía trên thực tế do Nguyễn Hữu Thịnh thực hiện; unit test của `hn_search` do TV2 viết. Nhóm cần cập nhật mục TV3 theo phần việc TV3 thực tế đã làm.
+- **Vũ Bá Tùng Lâm (phân công ban đầu: TV3 — C5):** Phần việc TV3 (eval nhóm, B3, test) đã chuyển cho Nguyễn Hữu Thịnh thực hiện. Đóng góp thực tế của Lâm: xem [TEAM.md](../../TEAM.md).
+- **Nguyễn Hữu Thịnh (TV3 + TV4 — C5, C6, C7):** *TV3:* viết 10 eval case trong `data/eval_group.json` (4 case route tới `hn_search`), chạy `--suite group` hợp lệ với v3 (10/10 PASS) và điền B3; thay 14 stub test của tool có sẵn (`pytest` 107 passed, 0 skipped). *TV4:* phát triển UI Streamlit `app.py` và `scripts/show_failures.py`; mở tunnel demo public; chat live v3 và viết B4; hoàn thiện A1, A3, dòng UI B5a, mục 5, mục 8 và tổng hợp báo cáo. Commit `3c4d555`, `ae13168`, `72c91e3`, `c0959ae`.
 
 Chi tiết đóng góp của từng thành viên nằm trong [TEAM.md](../../TEAM.md) và các báo cáo cá nhân `report/team/MSSV_HoTen.md`.
 

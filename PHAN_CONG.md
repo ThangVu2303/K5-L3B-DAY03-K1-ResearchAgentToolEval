@@ -1,6 +1,6 @@
 # Phân công công việc — Day 03 Research Agent Tool Eval (nhóm 4 người)
 
-> Mọi lệnh chạy trong thư mục `starter_v0/`. Chi tiết lệnh và code mẫu: xem [KE_HOACH_THUC_HIEN.md](KE_HOACH_THUC_HIEN.md).
+> Mọi lệnh chạy trong thư mục `starter_v0/`. Chi tiết lệnh: xem [README.md](README.md) và [starter_v0/README.md](starter_v0/README.md).
 > Deadline: **23:59 ngày lab (GMT+7)**. Run dùng làm bằng chứng phải có `provider_error_cases == 0` và `measured_cases == total_cases`.
 
 ## Thành viên
@@ -9,7 +9,7 @@
 |---|---|---|---|
 | TV1 — Nhóm trưởng / Prompt | Vũ Đình Thắng | 2A202603753 | C1, C3 |
 | TV2 — Tool declaration + Tool mới | Nguyễn Nhật Minh | 2A202603745 | C2, C4 |
-| TV3 — Test + Eval | Vũ Bá Tùng Lâm | 2A202603775 | C4, C5 |
+| TV3 — Test + Eval | ~~Vũ Bá Tùng Lâm~~ → **Nguyễn Hữu Thịnh** (chuyển việc 11/11) | 2A202603726 | C4, C5 |
 | TV4 — UI, Demo, Báo cáo | Nguyễn Hữu Thịnh | 2A202603726 | C6, C7 |
 
 ## Trạng thái hiện tại
@@ -21,8 +21,11 @@
 - [x] `starter_v0/artifacts/system_prompt.md` đã cải tiến từ v0 -> v3 đạt 100% accuracy (TV1)
 - [x] Các run v0, v1, v2, v3 đã hoàn thành với 0 lỗi provider và ghi đầy đủ vào `version_log.csv` (TV1)
 - [x] Bảng B1, B2, B6 trong `group_report.md` đã hoàn thiện (TV1)
-- [ ] `data/eval_group.json` (10 eval cases nhóm) và unit tests (TV3)
-- [ ] Chat live transcript và hoàn thiện Phần A, B4 (TV4)
+- [x] `data/eval_group.json` 10 eval case nhóm + run `--suite group` v3 hợp lệ 10/10, bảng B3 (TV3 — Thịnh)
+- [x] 14 stub test của tool có sẵn đã viết thật: `pytest` 107 passed, 0 skipped (TV3 bonus — Thịnh)
+- [x] UI Streamlit + link Cloudflare Tunnel, chat live transcript v3, Phần A (A1, A3), B4, dòng UI B5a (TV4 — Thịnh)
+- [ ] Run v3 base hiện có `provider_error_cases = 1` (M05) → TV1 chạy lại v3, cập nhật B1 và `version_log.csv`
+- [ ] Merge PR #2 (`feat/huuthinh`) và chốt commit trong `TEAM.md` (TV1)
 
 ---
 
@@ -64,17 +67,17 @@ Lưu ý: tên tham số trong yaml phải có trong chữ ký hàm. Không đổ
 
 ---
 
-## TV3 — Test + Eval (C4, C5: 10đ)
+## TV3 — Test + Eval (C4, C5: 10đ) — người thực hiện: Nguyễn Hữu Thịnh
 
-| # | Việc | File | Mốc |
-|---|---|---|---|
-| 1 | Chạy `pytest` lúc setup, báo trạng thái cho nhóm | — | Đầu giờ |
-| 2 | Viết **≥ 3 test** cho mỗi tool mới: happy path, input xấu, nhánh lỗi (HTTP 429/500) — mock bằng `fake_http` | `tests/test_tools_todo.py` | 15:30 |
-| 3 | Viết **10 eval case**: 5 single turn (`query`) + 5 multi turn (`turns`), ≥ 1 case route tới tool mới, mỗi case có `failure_type`, `expect`, `metadata.what_it_tests` | `data/eval_group.json` | 16:00 |
-| 4 | Chạy `--suite group` (với v2, chạy lại khi có v3) | `runs/` | 16:00 / 17:30 |
-| 5 | Viết B3 (10 case + PASS/FAIL), B5a (phần test) | `group_report.md` | Sau showdown |
-| 6 | *(Bonus +1)* Điền hết stub còn lại → `pytest` 0 skipped | `tests/test_tools_todo.py` | Sau 17:30 |
-| 7 | *(Bonus +1)* Regression test cho bug có sẵn rồi sửa code: `send(confirmed="false")` vẫn gửi; `limit=0` thành 5; `screenname="@sama"` không bỏ `@` | `tests/`, `tools/...` | Sau 17:30 |
+| # | Việc | File | Mốc | Trạng thái |
+|---|---|---|---|---|
+| 1 | Chạy `pytest` lúc setup, báo trạng thái cho nhóm | — | Đầu giờ | ✅ |
+| 2 | Viết **≥ 3 test** cho mỗi tool mới: happy path, input xấu, nhánh lỗi (HTTP 429/500) — mock bằng `fake_http` | `tests/test_tools_todo.py` | 15:30 | ✅ TV2 đã viết 26 trường hợp cho `hn_search` |
+| 3 | Viết **10 eval case**: 5 single turn (`query`) + 5 multi turn (`turns`), ≥ 1 case route tới tool mới, mỗi case có `failure_type`, `expect`, `metadata.what_it_tests` | `data/eval_group.json` | 16:00 | ✅ commit `72c91e3` (4 case route `hn_search`) |
+| 4 | Chạy `--suite group` (với v2, chạy lại khi có v3) | `runs/` | 16:00 / 17:30 | ✅ v3 hợp lệ 10/10 PASS — `runs/v3_B_group_gemini_20261111T101011513780.json` |
+| 5 | Viết B3 (10 case + PASS/FAIL), B5a (phần test) | `group_report.md` | Sau showdown | ✅ commit `c0959ae` |
+| 6 | *(Bonus +1)* Điền hết stub còn lại → `pytest` 0 skipped | `tests/test_tools_todo.py` | Sau 17:30 | ✅ 107 passed, 0 skipped |
+| 7 | *(Bonus +1)* Regression test cho bug có sẵn rồi sửa code: `send(confirmed="false")` vẫn gửi; `limit=0` thành 5; `screenname="@sama"` không bỏ `@` | `tests/`, `tools/...` | Sau 17:30 | Không làm (đã đạt bonus test qua mục 6) |
 
 Lưu ý: không chép case có sẵn trong `eval_base.json`. Trong `expect.args` chỉ ghi những arg chắc chắn đúng.
 
@@ -82,17 +85,17 @@ Lưu ý: không chép case có sẵn trong `eval_base.json`. Trong `expect.args`
 
 ## TV4 — UI, Demo, Báo cáo (C6: 10đ, C7: 10đ)
 
-| # | Việc | File | Mốc |
-|---|---|---|---|
-| 1 | Hoàn thiện `app.py`: hiện tool đã gọi + args + lỗi tool (không được che lỗi) | `starter_v0/app.py` | 15:00–16:00 |
-| 2 | Chạy `streamlit run app.py`, mở `cloudflared tunnel --url http://localhost:8501`, thử link từ máy khác | — | 16:15 |
-| 3 | Viết **Phần A**: A1 (agent làm gì, lệnh chạy UI, link), A2 (lấy từ TV2), A3 (3–5 câu hỏi mẫu) | `group_report.md` | **Trước 16:30** |
-| 4 | *(Tùy chọn)* Poster 1 trang | `report/team/poster.html` | Trước 16:30 |
-| 5 | Giữ tunnel chạy suốt showdown | — | 16:30 |
-| 6 | Chat live `chat.py --version v3` ≥ 3 lượt: tin thường / thiếu thông tin rồi bổ sung / yêu cầu gửi Telegram | `transcripts/` | Sau khi có v2/v3 |
-| 7 | Viết B4 (bảng transcript), mục khó khăn; tổng hợp Phần B | `group_report.md` | Sau showdown |
-| 8 | *(Bonus +2)* Telegram thật: agent hỏi → user đồng ý → `send(confirmed=true)` → `status: sent` | `transcripts/` | Sau phần bắt buộc |
-| 9 | *(Bonus +4, nếu máy ≥ 16GB RAM)* Ollama 2 model, v4-local/v5-local, mục B7 | `runs/`, `group_report.md` | Sau phần bắt buộc |
+| # | Việc | File | Mốc | Trạng thái |
+|---|---|---|---|---|
+| 1 | Hoàn thiện `app.py`: hiện tool đã gọi + args + lỗi tool (không được che lỗi) | `starter_v0/app.py` | 15:00–16:00 | ✅ commit `3c4d555` |
+| 2 | Chạy `streamlit run app.py`, mở `cloudflared tunnel --url http://localhost:8501`, thử link từ máy khác | — | 16:15 | ✅ link ở A1 |
+| 3 | Viết **Phần A**: A1 (agent làm gì, lệnh chạy UI, link), A2 (lấy từ TV2), A3 (3–5 câu hỏi mẫu) | `group_report.md` | **Trước 16:30** | ✅ |
+| 4 | *(Tùy chọn)* Poster 1 trang | `report/team/poster.html` | Trước 16:30 | Không làm |
+| 5 | Giữ tunnel chạy suốt showdown | — | 16:30 | Trong buổi showdown |
+| 6 | Chat live `chat.py --version v3` ≥ 3 lượt: tin thường / thiếu thông tin rồi bổ sung / yêu cầu gửi Telegram | `transcripts/` | Sau khi có v2/v3 | ✅ `transcripts/v3_gemini_20261111T024323043613.transcript.json` |
+| 7 | Viết B4 (bảng transcript), mục khó khăn; tổng hợp Phần B | `group_report.md` | Sau showdown | ✅ |
+| 8 | *(Bonus +2)* Telegram thật: agent hỏi → user đồng ý → `send(confirmed=true)` → `status: sent` | `transcripts/` | Sau phần bắt buộc | Không làm |
+| 9 | *(Bonus +4, nếu máy ≥ 16GB RAM)* Ollama 2 model, v4-local/v5-local, mục B7 | `runs/`, `group_report.md` | Sau phần bắt buộc | Không làm |
 
 Lưu ý: kiểm tra transcript không chứa key/token trước khi commit.
 

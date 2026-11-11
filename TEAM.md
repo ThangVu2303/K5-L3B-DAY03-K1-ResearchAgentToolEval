@@ -13,8 +13,8 @@
 | --: | ---------------- | ----------- | --------------------------- | ----------- | ------------------------------------------ |
 |   1 | Vũ Đình Thắng    | 2A202603753 | 26ai.thangvd2@vinuni.edu.vn | ThangVu2303 | TV1 — Nhóm trưởng / Prompt (C1, C3)        |
 |   2 | Nguyễn Nhật Minh | 2A202603745 | 26ai.minhnn7@vinuni.edu.vn  | NhMinh-2610 | TV2 — Tool declaration + Tool mới (C2, C4) |
-|   3 | Vũ Bá Tùng Lâm   | 2A202603775 | 26ai.lamvbt@vinuni.edu.vn   | lamvu-dev   | TV3 — Test + Eval (C4, C5)                 |
-|   4 | Nguyễn Hữu Thịnh | 2A202603726 | 26ai.thinhnh2@vinuni.edu.vn | huuthinh812 | TV4 — UI, Demo, Báo cáo (C6, C7)           |
+|   3 | Vũ Bá Tùng Lâm   | 2A202603775 | 26ai.lamvbt@vinuni.edu.vn   | lamvu-dev   | Phân công ban đầu: TV3 — Test + Eval; phần việc TV3 đã chuyển cho Thịnh (xem mục dưới) |
+|   4 | Nguyễn Hữu Thịnh | 2A202603726 | 26ai.thinhnh2@vinuni.edu.vn | huuthinh812 | TV3 + TV4 — Eval nhóm, Test, UI, Demo, Báo cáo (C5, C6, C7) |
 
 ## Cá nhân
 
@@ -77,56 +77,61 @@ Ví dụ: `report/team/2A202603753_VuDinhThang.md`.
 
 ---
 
-## Vũ Bá Tùng Lâm - 2A202603775 (TV3 — Test + Eval)
+## Vũ Bá Tùng Lâm - 2A202603775 (phân công ban đầu: TV3 — Test + Eval)
 
 ### Phần việc phụ trách
 
-- Chạy kiểm thử ban đầu và đảm bảo các bài test hợp đồng `test_tool_contract.py` luôn đạt 100%.
-- Viết unit tests (≥ 3 tests) cho tool mới `hn_search` trong `tests/test_tools_todo.py` bao phủ happy path, input xấu và xử lý lỗi mạng (C4).
-- Xây dựng bộ đánh giá của nhóm `starter_v0/data/eval_group.json` gồm 10 cases (5 single-turn và 5 multi-turn) bao gồm case gọi tới tool mới (C5).
-- Chạy đánh giá `--suite group`, phân tích kết quả và hoàn thiện bảng B3, B5a trong báo cáo nhóm.
+- Theo phân công ban đầu: viết 10 eval case nhóm, chạy `--suite group`, điền bảng B3 (C5).
+- Phần việc TV3 này đã được **Nguyễn Hữu Thịnh** thực hiện (commit `72c91e3`, `c0959ae` trên nhánh `feat/huuthinh`); unit test của tool mới `hn_search` do TV2 (Nguyễn Nhật Minh) viết.
 
 ### Đóng góp cụ thể
 
-- Đảm bảo toàn bộ test suite chạy xanh không có lỗi.
-- Xây dựng 10 eval cases độc lập với đầy đủ `what_it_tests`, `failure_type`, `expect` bao phủ các ranh giới phức tạp.
-- Đánh giá chất lượng của agent trên bộ test riêng của nhóm.
+- *(Lâm tự điền phần việc thực tế đã làm, nếu có.)*
 
 ### Bằng chứng
 
-- File `starter_v0/data/eval_group.json`.
-- File unit test `starter_v0/tests/test_tools_todo.py`.
-- Run JSON suite group trong `starter_v0/runs/`.
-
-> **Ghi chú (cập nhật 11/11):** 10 eval case trong `eval_group.json`, run `--suite group` hợp lệ, bảng B3 và 14 test thay stub trong `test_tools_todo.py` do **Nguyễn Hữu Thịnh** thực hiện (commit `72c91e3` trên nhánh `feat/huuthinh`). Unit test của `hn_search` do TV2 (Nguyễn Nhật Minh) viết. Nhóm cần cập nhật lại mục này theo phần việc TV3 thực tế đã làm.
+- *(Lâm tự điền: commit, file. Tính đến 11/11 chưa có commit của tài khoản `lamvu-dev` trên repo.)*
 
 ---
 
-## Nguyễn Hữu Thịnh - 2A202603726 (TV4 — UI, Demo, Báo cáo)
+## Nguyễn Hữu Thịnh - 2A202603726 (TV3 + TV4 — Eval nhóm, Test, UI, Demo, Báo cáo)
 
 ### Phần việc phụ trách
 
-- Phát triển và hoàn thiện giao diện ứng dụng web tương tác với Agent bằng Streamlit trong `starter_v0/app.py` (C6).
-- Hiển thị trực quan quá trình agent gọi tool, tham số truyền vào và kết quả trả về (không che giấu lỗi).
-- Thiết lập đường dẫn demo trực tuyến qua Cloudflare Tunnel cho buổi Team Showdown.
-- Thực hiện phiên chat trực tiếp (chat live đa lượt) với agent, thu thập file transcript vào `starter_v0/transcripts/` và viết bảng B4.
-- Hoàn thiện Phần A (A1, A3) và tổng hợp báo cáo nhóm `report/team/group_report.md` (C7).
+**TV3 — Test + Eval (C5, bonus test):**
+
+- Viết 10 eval case nhóm trong `starter_v0/data/eval_group.json` (5 single turn + 5 multi turn, có case route tới tool mới).
+- Chạy `--suite group` với v3, kiểm tra run hợp lệ và điền bảng B3.
+- Viết test cho các tool có sẵn trong `starter_v0/tests/test_tools_todo.py` (bonus test challenge: 0 skipped).
+
+**TV4 — UI, Demo, Báo cáo (C6, C7):**
+
+- Phát triển UI Streamlit `starter_v0/app.py`: hiện tool call, args, kết quả, không che lỗi.
+- Mở link demo public qua Cloudflare Tunnel cho Team showdown.
+- Chat live với agent v3, thu transcript và viết bảng B4.
+- Viết Phần A (A1, A3), dòng UI trong B5a và tổng hợp báo cáo nhóm.
 
 ### Đóng góp cụ thể
+
+**TV3:**
+
+- 10 eval case nhóm: 4 case route tới `hn_search` (theo tên HN, `sort_by="date"`, thiếu chủ đề rồi bổ sung, đổi nguồn web → HN); các case còn lại phủ bỏ `@` khỏi handle, `timeframe="month"`, dịch thuật ngoài phạm vi, giữ `search_type="Top"`/`max_results` qua nhiều lượt, và `send(confirmed=true)` sau khi user đã xác nhận.
+- Run `--suite group` v3 hợp lệ: 10/10 PASS, `provider_error_cases = 0`; B3 ghi rõ 3 case tool lỗi do môi trường (RapidAPI 403, thiếu token Telegram) mà eval không phát hiện.
+- Thay 14 stub `pytest.skip(TODO)` bằng test thật, offline, cho `clarify`, `format`, `send`, `lookup`, `fetch`, `timeline`, `social_search`, `policy`; `pytest`: 107 passed, 0 skipped, 0 failed.
+
+**TV4:**
 
 - Viết UI Streamlit dùng lại vòng lặp tool của `chat.py`: hiện tool call, args, trạng thái và JSON kết quả; không che lỗi tool/provider; câu hỏi mẫu dạng nút bấm; tự nhận version qua hash trong `version_log.csv`; tự lưu transcript.
 - Viết `scripts/show_failures.py` để in độ hợp lệ của run và các case FAIL (hỗ trợ bảng B2).
 - Ghép UI với prompt v3 (TV1) và `hn_search` (TV2) trên nhánh `feat/huuthinh`, chạy thật với Gemini `gemini-3.5-flash`.
-- Phát hiện run v3 của nhóm có 1 `provider_error` (chưa hợp lệ) và lỗi lệch hash do ký tự xuống dòng trên Windows; đã báo nhóm.
-- Chat live v3 đủ 3 kịch bản (yêu cầu thường, thiếu thông tin rồi bổ sung, yêu cầu gửi Telegram) và viết bảng B4, A1, A3, dòng UI B5a.
-- Làm thay phần TV3: viết 10 eval case nhóm (5 single + 5 multi turn, 4 case route tới `hn_search`), chạy `--suite group` hợp lệ với v3 (10/10 PASS) và điền bảng B3.
-- Bonus test challenge: thay 14 stub `pytest.skip(TODO)` bằng test thật cho các tool có sẵn; `pytest` đạt 107 passed, 0 skipped, 0 failed.
-- Mở link demo public bằng Cloudflare Tunnel cho Team showdown: https://landing-circumstances-sie-introductory.trycloudflare.com (đã kiểm tra trả về trang UI; link chỉ sống khi máy demo chạy Streamlit + cloudflared).
+- Phát hiện run v3 base của nhóm có 1 `provider_error` (chưa hợp lệ) và lỗi lệch hash do ký tự xuống dòng trên Windows; đã báo nhóm.
+- Chat live v3 đủ 3 kịch bản (yêu cầu thường, thiếu thông tin rồi bổ sung, yêu cầu gửi Telegram); viết B4, A1, A3, dòng UI B5a, mục 5 (khó khăn) và mục 8 (tài liệu tham khảo).
+- Mở link demo public bằng Cloudflare Tunnel cho Team showdown: https://landing-circumstances-sie-introductory.trycloudflare.com (link chỉ sống khi máy demo chạy Streamlit + cloudflared).
 
 ### Bằng chứng
 
-- Commit `3c4d555` trên nhánh `feat/huuthinh`: `starter_v0/app.py`, `starter_v0/scripts/show_failures.py`, `starter_v0/requirements.txt`.
+- TV3: commit `72c91e3` (`starter_v0/data/eval_group.json`, `starter_v0/tests/test_tools_todo.py`) và `c0959ae` (run `starter_v0/runs/v3_B_group_gemini_20261111T101011513780.json`, bảng B3).
+- TV4: commit `3c4d555` (`starter_v0/app.py`, `starter_v0/scripts/show_failures.py`, `starter_v0/requirements.txt`) và `ae13168` (transcript, báo cáo).
 - Transcript `starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json`.
-- Commit `72c91e3`: `starter_v0/data/eval_group.json`, `starter_v0/tests/test_tools_todo.py`; run `starter_v0/runs/v3_B_group_gemini_20261111T101011513780.json`; bảng B3.
-- Mục A1, A3, B4, B5a (dòng UI) trong `report/team/group_report.md`.
+- Mục A1, A3, B3, B4, B5a (dòng UI + ghi chú unit test), B5 (test challenge) trong `report/team/group_report.md`.
 - Báo cáo cá nhân `report/team/2A202603726_NguyenHuuThinh.md`.
