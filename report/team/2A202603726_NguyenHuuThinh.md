@@ -14,6 +14,7 @@
 - Mở link dùng thử bằng Cloudflare Tunnel cho buổi Team showdown.
 - Chat live với agent bản v3, thu transcript và viết bảng B4.
 - Viết Phần A (A1, A3), dòng UI trong B5a, và tổng hợp báo cáo nhóm.
+- Làm thay phần việc TV3: 10 eval case nhóm, run `--suite group`, bảng B3; và bonus test challenge (14 test cho tool có sẵn).
 
 ## 3. Đóng góp cụ thể
 
@@ -40,25 +41,39 @@
 - Chạy `python chat.py --provider gemini --version v3` với đủ 3 kịch bản: yêu cầu thường, thiếu thông tin rồi bổ sung, yêu cầu đăng Telegram. Kết quả: agent hỏi lại khi thiếu tài khoản, xin xác nhận yes/no trước khi gửi, gọi `lookup(news, day)` và trả tin có nguồn.
 - Viết bảng B4, mục A1, A3 và dòng UI trong B5a của `group_report.md`.
 
+**Eval nhóm (phần TV3)**
+
+- Viết 10 case trong `starter_v0/data/eval_group.json`: 5 single turn + 5 multi turn, 4 case route tới tool mới `hn_search` (route theo tên HN, `sort_by="date"`, thiếu chủ đề rồi bổ sung, đổi nguồn web → HN). Các case còn lại phủ những chỗ bộ base chưa có: bỏ `@` khỏi handle, `timeframe="month"`, dịch thuật ngoài phạm vi, giữ `search_type="Top"` và `max_results` qua nhiều lượt, và chiều "đã xác nhận thì phải gửi" của boundary `send`.
+- Chạy `--suite group` với v3: run hợp lệ 10/10, tất cả PASS. Điền bảng B3, ghi rõ 3 case tool lỗi do môi trường (RapidAPI 403, thiếu token Telegram) mà eval không phát hiện.
+
+**Unit test (bonus test challenge)**
+
+- Thay 14 stub `pytest.skip(TODO)` trong `tests/test_tools_todo.py` bằng test thật cho `clarify`, `format`, `send`, `lookup`, `fetch`, `timeline`, `social_search`, `policy`. Test chạy offline (mock HTTP bằng `fake_http`), assert cả request gửi đi lẫn kết quả trả về; có test guardrail cho `send` khi thiếu token và cho `policy` đưa dòng injection probe vào `untrusted_text`.
+
 ## 4. Bằng chứng
 
 - Commit: `3c4d555` — _feat(ui): add Streamlit UI for the research agent_ (nhánh `feat/huuthinh`).
 - Code: [`starter_v0/app.py`](../../starter_v0/app.py), [`starter_v0/scripts/show_failures.py`](../../starter_v0/scripts/show_failures.py), dòng `streamlit` trong [`starter_v0/requirements.txt`](../../starter_v0/requirements.txt).
 - Transcript chat live v3: [`v3_gemini_20261111T024323043613.transcript.json`](../../starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json) (`artifact_version = v3+pd5ffefbef293+t8a02817ed09c`).
-- Báo cáo nhóm: [group_report.md](group_report.md) — A1, A3, B4, dòng UI trong B5a.
+- Commit `72c91e3` — _feat(eval): add 10 group eval cases and implement all TODO tool tests_: [`eval_group.json`](../../starter_v0/data/eval_group.json), [`test_tools_todo.py`](../../starter_v0/tests/test_tools_todo.py).
+- Run eval nhóm: [`v3_B_group_gemini_20261111T101011513780.json`](../../starter_v0/runs/v3_B_group_gemini_20261111T101011513780.json) (10/10 PASS, `provider_error_cases = 0`).
+- Báo cáo nhóm: [group_report.md](group_report.md) — A1, A3, B3, B4, dòng UI trong B5a, test challenge trong B5.
 - AI/công cụ đã dùng và cách tự kiểm tra kết quả:
   - Dùng Claude Code để đọc repo, lập kế hoạch, viết `app.py`, `show_failures.py` và nháp các mục báo cáo.
   - Tự kiểm tra bằng cách:
     - chạy `streamlit run app.py` trên máy và thử các câu hỏi mẫu;
     - chạy test UI tự động (Streamlit AppTest) với provider giả để kiểm tra 3 tình huống: trả lời có tool, hỏi lại, lỗi provider;
     - chạy thật với Gemini `gemini-3.5-flash` + prompt v3;
-    - chạy `pytest` sau khi ghép UI (93 passed, 0 failed);
+    - chạy `pytest` sau khi ghép UI (93 passed, 0 failed) và sau khi viết thêm test (107 passed, 0 skipped, 0 failed);
+    - chạy `pytest tests/test_tool_contract.py` để chắc eval case chỉ dùng tool đã khai báo, rồi kiểm tra run group bằng `scripts/show_failures.py` (hợp lệ, 10/10);
     - đọc lại transcript để chắc không có API key trong file.
 
 ## 5. Khó khăn và cách xử lý
 
 - **Hết quota Gemini (429):** free tier chỉ 20 request/ngày cho mỗi project và mỗi model. Tạo key mới trong cùng project không giúp được vì quota tính theo project. Cách xử lý: dùng key ở project khác, chuyển sang model `gemini-3.5-flash` giống TV1, và để dành quota cho lần chat live thật và showdown.
 - **Thiếu `RAPIDAPI_KEY`:** ở lượt "Của Andrej Karpathy", model gọi đúng `timeline(screenname="karpathy", limit=5)` nhưng tool lỗi do máy chưa có key. Lỗi được hiện rõ trong UI/transcript; đã bổ sung key sau đó.
+- **Run eval nhóm lần đầu không hợp lệ:** hết quota sau 3 case (7/10 `provider_error`). Một key mới tạo trong cùng project vẫn hết quota, một key khác bị 401 do copy sai. Cách xử lý: kiểm tra mỗi key bằng đúng 1 request trước khi chạy cả suite, rồi chạy lại bằng key ở project khác.
+- **RapidAPI trả 403 Forbidden:** key RapidAPI có nhưng chưa subscribe gói Twitter API45, nên `timeline`/`social_search` lỗi khi chạy thật (thấy trong run group G03, G08).
 - **Nhầm môi trường lệnh:** ban đầu gõ lệnh PowerShell trong Git Bash; đã chuyển sang `source .venv/Scripts/activate` và `cp`.
 
 ## 6. Tự đánh giá

@@ -98,6 +98,8 @@ Ví dụ: `report/team/2A202603753_VuDinhThang.md`.
 - File unit test `starter_v0/tests/test_tools_todo.py`.
 - Run JSON suite group trong `starter_v0/runs/`.
 
+> **Ghi chú (cập nhật 11/11):** 10 eval case trong `eval_group.json`, run `--suite group` hợp lệ, bảng B3 và 14 test thay stub trong `test_tools_todo.py` do **Nguyễn Hữu Thịnh** thực hiện (commit `72c91e3` trên nhánh `feat/huuthinh`). Unit test của `hn_search` do TV2 (Nguyễn Nhật Minh) viết. Nhóm cần cập nhật lại mục này theo phần việc TV3 thực tế đã làm.
+
 ---
 
 ## Nguyễn Hữu Thịnh - 2A202603726 (TV4 — UI, Demo, Báo cáo)
@@ -117,11 +119,14 @@ Ví dụ: `report/team/2A202603753_VuDinhThang.md`.
 - Ghép UI với prompt v3 (TV1) và `hn_search` (TV2) trên nhánh `feat/huuthinh`, chạy thật với Gemini `gemini-3.5-flash`.
 - Phát hiện run v3 của nhóm có 1 `provider_error` (chưa hợp lệ) và lỗi lệch hash do ký tự xuống dòng trên Windows; đã báo nhóm.
 - Chat live v3 đủ 3 kịch bản (yêu cầu thường, thiếu thông tin rồi bổ sung, yêu cầu gửi Telegram) và viết bảng B4, A1, A3, dòng UI B5a.
+- Làm thay phần TV3: viết 10 eval case nhóm (5 single + 5 multi turn, 4 case route tới `hn_search`), chạy `--suite group` hợp lệ với v3 (10/10 PASS) và điền bảng B3.
+- Bonus test challenge: thay 14 stub `pytest.skip(TODO)` bằng test thật cho các tool có sẵn; `pytest` đạt 107 passed, 0 skipped, 0 failed.
 - Mở link demo public bằng Cloudflare Tunnel cho Team showdown: https://landing-circumstances-sie-introductory.trycloudflare.com (đã kiểm tra trả về trang UI; link chỉ sống khi máy demo chạy Streamlit + cloudflared).
 
 ### Bằng chứng
 
 - Commit `3c4d555` trên nhánh `feat/huuthinh`: `starter_v0/app.py`, `starter_v0/scripts/show_failures.py`, `starter_v0/requirements.txt`.
 - Transcript `starter_v0/transcripts/v3_gemini_20261111T024323043613.transcript.json`.
+- Commit `72c91e3`: `starter_v0/data/eval_group.json`, `starter_v0/tests/test_tools_todo.py`; run `starter_v0/runs/v3_B_group_gemini_20261111T101011513780.json`; bảng B3.
 - Mục A1, A3, B4, B5a (dòng UI) trong `report/team/group_report.md`.
 - Báo cáo cá nhân `report/team/2A202603726_NguyenHuuThinh.md`.

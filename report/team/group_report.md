@@ -119,9 +119,25 @@ Lấy từ `results[*].result.failures` trong run JSON.
 
 Liệt kê đúng 10 case trong `starter_v0/data/eval_group.json` (5 single turn + 5 multi turn).
 
+Run: [`v3_B_group_gemini_20261111T101011513780.json`](../../starter_v0/runs/v3_B_group_gemini_20261111T101011513780.json) — `python run_eval.py --provider gemini --version v3 --suite group --eval-cases data/eval_group.json`, model `gemini-3.5-flash`, `artifact_version = v3+pd5ffefbef293+t8a02817ed09c`. Run hợp lệ: `provider_error_cases = 0`, `measured_cases = 10/10`. Kết quả: `case_accuracy = 1.0`, `tool_routing_accuracy = 1.0`, `argument_accuracy = 1.0`, `multiturn_accuracy = 1.0`.
+
 | Case ID | What It Tests | Expected Tool/Behavior | Result |
 |---|---|---|---|
-|  |  |  |  |
+| G01_hn_routing *(single)* | Nhắc rõ Hacker News + chủ đề → route tới tool mới `hn_search`, query giữ đúng chủ đề | `hn_search(query="rust")` | ✅ PASS — `hn_search(query="Rust", sort_by="relevance", max_results=5)` |
+| G02_hn_sort_by_date *(single)* | Viết tắt "HN" vẫn route tới `hn_search`; "mới nhất" → `sort_by="date"` | `hn_search(sort_by="date")` | ✅ PASS — `hn_search(query="LLM", sort_by="date", max_results=5)` |
+| G03_handle_with_at_and_limit *(single)* | Handle có `@` → bỏ `@`; giữ đúng số lượng | `timeline(screenname="ylecun", limit=3)` | ✅ PASS — `timeline(screenname="ylecun", limit=3)`. Tool trả HTTP 403 từ RapidAPI (key chưa subscribe gói) — lỗi môi trường, eval chỉ chấm tool call |
+| G04_news_timeframe_month *(single)* | Tin tức + "tháng này" → `timeframe="month"` (base eval chỉ phủ day/week) | `lookup(topic="news", timeframe="month")` | ✅ PASS — `lookup(query="NVIDIA", topic="news", timeframe="month", max_results=5)` |
+| G05_out_of_scope_translation *(single)* | Dịch thuật không cần nguồn ngoài → không gọi tool | `no_tool` | ✅ PASS — không gọi tool, trả lời bản dịch trực tiếp |
+| G06_hn_clarify_then_fill *(multi, 3 lượt)* | Thiếu chủ đề rồi bổ sung; giữ query từ lượt 2 và số lượng từ lượt 3 | `hn_search(query="vector database", max_results=3)` | ✅ PASS — `hn_search(query="vector database", max_results=3)` |
+| G07_switch_web_to_hn *(multi, 2 lượt)* | Đổi nguồn web → Hacker News, chủ đề lấy từ lượt trước qua đại từ "nó"; không gọi lại `lookup` | `hn_search` (không `lookup`) | ✅ PASS — chỉ gọi `hn_search(query="Apple Vision Pro")` |
+| G08_carryover_search_type_top *(multi, 2 lượt)* | Ghi đè chủ đề (Gemini → Claude) nhưng giữ `search_type="Top"` | `social_search(query="claude", search_type="Top")` | ✅ PASS — `social_search(query="Claude", search_type="Top", limit=5)`. Tool trả HTTP 403 (cùng lỗi RapidAPI như G03) |
+| G09_carryover_max_results *(multi, 2 lượt)* | Lượt 2 chỉ thêm số lượng → giữ `topic`/`timeframe` từ lượt 1 | `lookup(topic="news", timeframe="week", max_results=3)` | ✅ PASS — `lookup(query="AI", topic="news", timeframe="week", max_results=3)` |
+| G10_send_after_explicit_confirmation *(multi, 2 lượt)* | Mặt còn lại của boundary R12: user đã xác nhận rõ + đưa nội dung → gọi `send(confirmed=true)`, không hỏi lại | `send(confirmed=true)` | ✅ PASS — `send(confirmed=true, text="Tin AI hôm nay: IBM và Microsoft ra mắt nền tảng AI agent cho doanh nghiệp.")`. Tool trả `Missing TELEGRAM_BOT_TOKEN` (nhóm không cấu hình bot) nên không gửi thật |
+
+Nhận xét:
+- 10/10 PASS, trong đó 4 case route tới tool mới `hn_search` (G01, G02, G06, G07). Không có case nào chép từ `eval_base.json`; các case phủ thêm `timeframe="month"`, bỏ `@` khỏi handle, `sort_by="date"`, giữ `search_type`/`max_results` qua nhiều lượt, và chiều "đã xác nhận thì phải gửi" của boundary `send`.
+- 3 case có tool lỗi do môi trường (G03, G08: RapidAPI 403; G10: thiếu token Telegram). Eval chỉ chấm lựa chọn tool và args của model nên vẫn PASS; đây là ví dụ cho thấy eval không phát hiện lỗi tầng tool — phần đó do unit test đảm nhiệm (B5a).
+- Lần chạy đầu cùng ngày bị 7/10 case `provider_error` (Gemini hết quota 20 request/ngày) nên bị loại; đã chạy lại bằng key ở project khác.
 
 ### B4. Live Chat Evidence
 
@@ -207,7 +223,8 @@ Lỗi đặc thù của model nhỏ (đếm từ run JSON):
 - **Vũ Đình Thắng (TV1 — C1, C3):** Thiết lập môi trường và sửa lỗi provider (`gemini_provider.py`); chạy baseline v0 hợp lệ và phân tích 9 failure cases (Bảng B2); thực hiện chuỗi cải tiến lặp v0 ➔ v1 ➔ v2 ➔ v3 trên `system_prompt.md`, đưa độ chính xác từ 55.0% lên 100.0%; ghi nhận lịch sử phiên bản `version_log.csv`; hoàn thiện B1, B2, Mục 1, 3, 5, 7 trong báo cáo nhóm.
 - **Nguyễn Nhật Minh (TV2 — C2, C4):** Viết lại khai báo cho 10 công cụ trong `artifacts/tools.yaml`; phát triển công cụ mới `hn_search` kèm `TOOL.md` và đăng ký registry; viết tài liệu bàn giao `TOOL-HANDOFF.md`, Mục A2 và B5a.
 - **Vũ Bá Tùng Lâm (TV3 — C4, C5):** Viết bộ unit tests cho tool mới trong `tests/test_tools_todo.py`; xây dựng bộ đánh giá của nhóm gồm 10 cases trong `data/eval_group.json`; chạy eval suite group và hoàn thiện bảng B3, B5a.
-- **Nguyễn Hữu Thịnh (TV4 — C6, C7):** Phát triển ứng dụng Streamlit `app.py`; triển khai tunnel demo public; thực hiện các phiên chat live đa lượt, thu thập transcript vào `transcripts/` và viết bảng B4; hoàn thiện Mục A1, A3 và tổng hợp báo cáo.
+- **Nguyễn Hữu Thịnh (TV4 — C6, C7):** Phát triển ứng dụng Streamlit `app.py`; triển khai tunnel demo public; thực hiện các phiên chat live đa lượt, thu thập transcript vào `transcripts/` và viết bảng B4; hoàn thiện Mục A1, A3 và tổng hợp báo cáo. Làm thay phần TV3: viết 10 eval case trong `data/eval_group.json`, chạy `--suite group` hợp lệ (10/10 PASS) và điền B3; thay 14 stub test của tool có sẵn (`pytest` 107 passed, 0 skipped) — commit `72c91e3`.
+- *Ghi chú:* phần eval nhóm, B3 và 14 test nêu ở mục TV3 phía trên thực tế do Nguyễn Hữu Thịnh thực hiện; unit test của `hn_search` do TV2 viết. Nhóm cần cập nhật mục TV3 theo phần việc TV3 thực tế đã làm.
 
 Chi tiết đóng góp của từng thành viên nằm trong [TEAM.md](../../TEAM.md) và các báo cáo cá nhân `report/team/MSSV_HoTen.md`.
 
